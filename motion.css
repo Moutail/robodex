@@ -1,0 +1,153 @@
+/* Robodex — animations, comportement d'application et mise en page téléphone (chargé après styles.css) */
+:root { --ease: cubic-bezier(0.2, 0.8, 0.2, 1); --safe-b: env(safe-area-inset-bottom, 0px); }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { -webkit-tap-highlight-color: transparent; overscroll-behavior-y: none; }
+button { touch-action: manipulation; }
+
+/* ---------- Fond en fondu ---------- */
+#bg { background: var(--base); }
+.bg-layer { position: absolute; inset: 0; background: center / cover no-repeat; opacity: 0; transition: opacity 0.9s ease; }
+.bg-layer.is-on { opacity: 1; }
+
+/* ---------- Entrées ---------- */
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes pop { from { opacity: 0.2; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes slide-next { from { opacity: 0; transform: translateX(26px); } to { opacity: 1; transform: none; } }
+@keyframes slide-back { from { opacity: 0; transform: translateX(-26px); } to { opacity: 1; transform: none; } }
+@keyframes breathe { 50% { box-shadow: 0 6px 34px color-mix(in srgb, var(--accent) 80%, transparent); transform: scale(1.04); } }
+@keyframes boot-in { from { opacity: 0; transform: translateY(20px) scale(0.96); } to { opacity: 1; transform: none; } }
+
+.view.is-on > * { animation: rise 0.55s var(--ease) both; }
+.view.is-on > *:nth-child(2) { animation-delay: 0.07s; }
+.view.is-on > *:nth-child(3) { animation-delay: 0.14s; }
+.stage > * { animation: rise 0.5s var(--ease) both; }
+.stage > *:nth-child(2) { animation-delay: 0.06s; }
+.stage > *:nth-child(3) { animation-delay: 0.12s; }
+.stat, .facts li { animation: rise 0.45s var(--ease) both; animation-delay: calc(var(--i, 0) * 55ms); }
+.cmp-row { animation: rise 0.45s var(--ease) both; animation-delay: calc(var(--i, 0) * 50ms); }
+#journal-list li { opacity: 0; transform: translateY(18px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+#journal-list li.seen { opacity: 1; transform: none; }
+.vega-say.pop { animation: pop 0.35s var(--ease) both; }
+
+/* ---------- Photo : fondu, léger zoom, texte qui glisse ---------- */
+.hero img { opacity: 0; transform: scale(1.07); transition: opacity 0.6s ease, transform 1.4s var(--ease); }
+.hero img.is-in { opacity: 1; transform: scale(1); }
+.hero.anim .hero-text > * { animation: slide-next 0.5s var(--ease) both; }
+.hero.anim[data-dir="back"] .hero-text > * { animation-name: slide-back; }
+.hero.anim .hero-text > *:nth-child(2) { animation-delay: 0.05s; }
+.hero.anim .hero-text > *:nth-child(3) { animation-delay: 0.1s; }
+.nav-arrow { position: absolute; top: 50%; z-index: 2; width: 46px; height: 46px; margin-top: -23px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.4); background: rgba(0, 0, 0, 0.32); color: #fff; cursor: pointer; display: grid; place-items: center; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); opacity: 0; transition: opacity 0.2s, transform 0.2s var(--ease); }
+.nav-arrow.prev { left: 14px; }
+.nav-arrow.next { right: 14px; }
+.nav-arrow svg, .tab svg, .vega-toggle svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.hero:hover .nav-arrow, .nav-arrow:focus-visible { opacity: 1; }
+.nav-arrow:hover { transform: scale(1.08); }
+
+/* ---------- Boutons, cartes, liste ---------- */
+.btn, .tab, #roster-list button, .chips button { transition: transform 0.15s var(--ease), background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s; }
+.btn:active, .tab:active, #roster-list button:active, .chips button:active, .orb:active { transform: scale(0.96); }
+#roster-list .thumb { transition: transform 0.3s var(--ease), box-shadow 0.3s; }
+#roster-list button.is-on .thumb { box-shadow: 0 0 0 2px var(--accent); }
+@media (hover: hover) {
+  #roster-list button:hover .thumb { transform: scale(1.06); }
+  .chip, .scale { transition: transform 0.3s var(--ease); }
+  .chip:hover { transform: translateY(-3px); }
+}
+
+/* ---------- Onglets : la pastille glisse ---------- */
+.tabs { position: relative; }
+.tab { position: relative; z-index: 1; display: flex; align-items: center; gap: 8px; }
+.tab svg { display: none; }
+.tab.is-on { background: none; box-shadow: none; }
+.tab-pill { position: absolute; top: 4px; bottom: 4px; left: 0; width: 0; border-radius: 999px; background: var(--glass-strong); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.14); transition: transform 0.4s var(--ease), width 0.4s var(--ease); }
+
+/* ---------- Démarrage ---------- */
+.boot-inner { animation: boot-in 0.7s var(--ease) both; transition: transform 0.5s var(--ease), opacity 0.4s, filter 0.5s; }
+#boot.is-off .boot-inner { transform: scale(1.08); opacity: 0; filter: blur(8px); }
+.boot-orb { width: 74px; height: 74px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 10px; animation: breathe 2.6s ease-in-out infinite; }
+.boot-orb span { width: 5px; height: 12px; border-radius: 3px; background: var(--accent-ink); animation: wave 1.1s ease-in-out infinite; }
+.boot-orb span:nth-child(2) { animation-delay: 0.12s; }
+.boot-orb span:nth-child(3) { animation-delay: 0.24s; }
+.boot-orb span:nth-child(4) { animation-delay: 0.36s; }
+.boot-orb span:nth-child(5) { animation-delay: 0.48s; }
+
+/* ---------- Assistant ---------- */
+.orb { transition: transform 0.2s var(--ease), background 0.2s; animation: breathe 3.4s ease-in-out infinite; }
+.vega.is-speaking .orb, .vega.is-listening .orb { animation: none; }
+.vega-toggle { display: none; }
+.vega { transition: box-shadow 0.3s; }
+
+/* ---------- Téléphone : une vraie application ---------- */
+@media (max-width: 760px) {
+  body { font-size: 16px; }
+  .top { position: static; margin: calc(10px + env(safe-area-inset-top, 0px)) 14px 0; padding: 10px 12px 10px 18px; border-radius: 22px; flex-wrap: nowrap; }
+  .brand { font-size: 22px; }
+  /* Sans effet de verre ici : un filtre sur l'en-tête empêcherait la barre d'onglets de se fixer en bas de l'écran */
+  .top { background: none; border-color: transparent; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  #view-base.is-on, .view.is-on { grid-template-columns: minmax(0, 1fr); }
+  .roster, .stage, .intel { min-width: 0; }
+  main { padding: 12px 14px calc(178px + var(--safe-b)); }
+
+  /* Barre d'onglets en bas, comme une application */
+  .tabs { position: fixed; z-index: 8; left: 14px; right: 14px; bottom: calc(10px + var(--safe-b)); padding: 6px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; background: var(--glass-strong); border: 1px solid var(--edge); -webkit-backdrop-filter: blur(26px) saturate(1.5); backdrop-filter: blur(26px) saturate(1.5); box-shadow: var(--shadow); border-radius: 24px; }
+  .tab { flex-direction: column; gap: 3px; padding: 8px 4px; font-size: 12px; min-height: 52px; justify-content: center; }
+  .tab svg { display: block; }
+  .tab.is-on { color: var(--accent); }
+  .tab-pill { top: 6px; bottom: 6px; border-radius: 18px; background: var(--field); box-shadow: none; }
+
+  /* Liste des robots : un carrousel qui défile au doigt */
+  .roster { padding: 14px 0 12px; }
+  .roster .field { margin: 0 14px; width: calc(100% - 28px); }
+  #roster-list { display: flex; gap: 6px; overflow-x: auto; padding: 4px 14px 2px; margin-top: 12px; scroll-snap-type: x proximity; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  #roster-list::-webkit-scrollbar { display: none; }
+  #roster-list li { flex: 0 0 auto; scroll-snap-align: center; }
+  #roster-list button { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 6px; width: 84px; padding: 8px 4px; }
+  #roster-list .thumb { width: 60px; height: 60px; border-radius: 18px; }
+  #roster-list .nm { font-size: 14px; }
+  #roster-list .mk { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 76px; }
+
+  .hero { height: 58vh; height: 58dvh; min-height: 320px; max-height: 520px; }
+  .hero-text { left: 18px; right: 18px; bottom: 16px; }
+  .hero h2 { font-size: clamp(40px, 13vw, 60px); }
+  .hero figcaption { max-width: calc(100% - 28px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nav-arrow { display: none; }
+  .meta { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .meta .chip:last-child { grid-column: 1 / -1; }
+  .chip { padding: 12px 14px; }
+  .roster, .intel, .compare, .journal, .scale { border-radius: 20px; }
+  .intel, .compare, .journal, .scale { padding: 18px 16px; }
+  .btn { min-height: 46px; }
+  .compare-pick { grid-template-columns: 1fr; gap: 8px; }
+  .vs { text-align: center; }
+  .cmp-head { font-size: 22px; }
+  .cmp-face { width: 68px; height: 68px; border-radius: 18px; }
+  .cmp-side .val { font-size: 18px; }
+  .cmp-row { grid-template-columns: 1fr 78px 1fr; gap: 8px; }
+  .cmp-row .mid { font-size: 12px; }
+
+  /* Assistant : une pastille au-dessus des onglets, qui se déplie quand on la touche */
+  .vega { position: fixed; z-index: 7; left: 14px; right: 14px; bottom: calc(84px + var(--safe-b)); margin: 0; padding: 8px 8px 8px 10px; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; border-radius: 24px; }
+  .orb { width: 48px; height: 48px; }
+  .orb span { width: 3px; height: 8px; }
+  @keyframes wave { 50% { height: 24px; } }
+  .vega-name { font-size: 12px; }
+  .vega-say { font-size: 15px; margin: 0; max-height: none; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; line-clamp: 1; }
+  .vega-toggle { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--field); cursor: pointer; transition: transform 0.35s var(--ease); }
+  .chips, .ask { display: none; }
+  .vega.is-open { box-shadow: 0 -10px 60px rgba(0, 0, 0, 0.45); }
+  .vega.is-open .vega-toggle { transform: rotate(180deg); }
+  .vega.is-open .vega-say { -webkit-line-clamp: 8; line-clamp: 8; }
+  .vega.is-open .chips { display: flex; margin-top: 10px; animation: rise 0.3s var(--ease) both; }
+  .vega.is-open .chips button { padding: 8px 14px; font-size: 14px; }
+  .vega.is-open .ask { display: grid; grid-column: 1 / -1; grid-template-columns: 1fr auto; padding: 4px 2px 2px; animation: rise 0.35s var(--ease) both; }
+  .ask .btn-small { grid-column: 1 / -1; justify-self: stretch; }
+}
+@media (max-width: 380px) {
+  #theme { padding: 7px 10px; font-size: 13px; }
+  .hero h2 { font-size: 38px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  #journal-list li { opacity: 1; transform: none; }
+  .hero img { opacity: 1; transform: none; }
+}

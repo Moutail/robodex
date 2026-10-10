@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="fr" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Robodex — robots humanoïdes : ce qui est promis, ce qui est prouvé</title>
+    <meta name="description" content="Les promesses des fabricants de robots humanoïdes face à la réalité, avec les fiches, les comparaisons et un assistant vocal." />
+    <meta name="theme-color" content="#0b0e17" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="motion.css" />
+    <link rel="stylesheet" href="carousel.css" />
+    <link rel="stylesheet" href="home.css" />
+    <script>
+      // Thème appliqué avant l'affichage pour éviter un flash
+      try {
+        const t = localStorage.getItem("robodex-theme") || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+        document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <!-- Fond : la photo du robot affiché, floutée (deux couches pour le fondu) -->
+    <div id="bg" aria-hidden="true"><div class="bg-layer"></div><div class="bg-layer"></div></div>
+
+    <!-- Écran de démarrage : le navigateur n'autorise la voix qu'après un premier clic -->
+    <div id="boot">
+      <div class="boot-inner glass">
+        <div class="boot-orb" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+        <h1>Robodex</h1>
+        <p>Robots humanoïdes : ce qui est promis, ce qui est prouvé</p>
+        <button id="boot-start" class="btn btn-main">Entrer avec la voix</button>
+        <button id="boot-silent" class="btn">Entrer sans la voix</button>
+      </div>
+    </div>
+
+    <header class="top glass">
+      <div class="brand">Robodex</div>
+      <nav class="tabs" aria-label="Sections">
+        <span class="tab-pill" aria-hidden="true"></span>
+        <button class="tab is-on" data-view="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z" /></svg><span>Accueil</span></button>
+        <button class="tab" data-view="promises"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" /><path d="M12 8v4l3 2" /></svg><span>Promesses</span></button>
+        <button class="tab" data-view="base"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="2" /><rect x="13" y="4" width="7" height="7" rx="2" /><rect x="4" y="13" width="7" height="7" rx="2" /><rect x="13" y="13" width="7" height="7" rx="2" /></svg><span>Robots</span></button>
+        <button class="tab" data-view="compare"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16M17 4v16M3 9h8M13 15h8" /></svg><span>Comparer</span></button>
+        <button class="tab" data-view="journal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M5 12h14M5 18h9" /></svg><span>Journal</span></button>
+      </nav>
+      <div class="status"><span id="count">0</span> robots · mis à jour le <span id="updated"></span></div>
+      <button id="theme" class="btn btn-small" type="button">Mode clair</button>
+    </header>
+
+    <main>
+      <!-- ACCUEIL -->
+      <section id="view-home" class="view is-on">
+        <div class="glass home-hero">
+          <span class="over">Robots humanoïdes</span>
+          <h1>Ce qui est promis.<br /><em>Ce qui est prouvé.</em></h1>
+          <p>Les fabricants annoncent des milliers de robots, des prix cassés et des dates. Robodex note chaque promesse, attend l'échéance, et regarde ce qui s'est vraiment passé, sources à l'appui.</p>
+          <div class="home-actions">
+            <button class="btn btn-main" id="home-cta-promises">Voir les promesses</button>
+            <button class="btn" id="home-cta-robots">Explorer les robots</button>
+          </div>
+        </div>
+
+        <div class="home-live">
+          <article class="glass live" id="live-late">
+            <span class="kicker"></span>
+            <div class="days"><span id="late-d">0</span><small>jours</small></div>
+            <div class="hms" id="late-hms"></div>
+            <h3></h3>
+            <div class="who"></div>
+            <button class="btn btn-small" type="button">Voir le détail</button>
+          </article>
+          <article class="glass live next" id="live-next">
+            <span class="kicker"></span>
+            <div class="days"><span id="next-due-d">0</span><small>jours</small></div>
+            <div class="hms" id="next-due-hms"></div>
+            <h3></h3>
+            <div class="who"></div>
+            <button class="btn btn-small" type="button">Voir le détail</button>
+          </article>
+        </div>
+
+        <div class="home-nums">
+          <div class="glass num"><b id="n-total">0</b><span>promesses suivies</span></div>
+          <div class="glass num ok"><b id="n-ok">0</b><span>tenues</span></div>
+          <div class="glass num bad"><b id="n-bad">0</b><span>non tenues ou contestées</span></div>
+          <div class="glass num"><b id="n-wait">0</b><span>en attente de preuve</span></div>
+        </div>
+
+        <div class="home-cols">
+          <div class="glass home-block">
+            <div class="block-head"><h3>Le tableau des marques</h3></div>
+            <div id="scoreboard"></div>
+            <div class="score-legend">
+              <span><i style="background: var(--ok)"></i>tenue</span>
+              <span><i style="background: var(--mid)"></i>en partie, ou sans preuve</span>
+              <span><i style="background: var(--bad)"></i>non tenue, contestée</span>
+              <span><i style="background: var(--wait)"></i>en cours</span>
+            </div>
+          </div>
+          <div class="glass home-block">
+            <div class="block-head"><h3>Dernières avancées</h3><button class="link" id="home-cta-news" type="button">Tout le journal</button></div>
+            <ul id="home-news"></ul>
+          </div>
+        </div>
+
+        <div class="glass home-block">
+          <div class="block-head"><h3>Les <span id="n-robots">0</span> robots de la base</h3></div>
+          <div id="home-robots"></div>
+        </div>
+      </section>
+
+      <!-- PROMESSES -->
+      <section id="view-promises" class="view">
+        <div class="glass promise-intro">
+          <h2>Promesse contre réalité</h2>
+          <p>Chaque carte reprend une annonce d'un fabricant, sa date et son échéance, puis ce que des sources indépendantes ont constaté. Une promesse sans source n'entre pas dans la liste.</p>
+          <div id="promise-filters"></div>
+        </div>
+        <div id="promise-list"></div>
+      </section>
+
+      <!-- ROBOTS -->
+      <section id="view-base" class="view">
+        <aside class="glass roster">
+          <input id="search" class="field" type="search" placeholder="Rechercher un robot, un pays…" aria-label="Rechercher" />
+          <ul id="roster-list"></ul>
+        </aside>
+
+        <section class="stage">
+          <figure class="hero glass" id="hero">
+            <img id="r-img" alt="" />
+            <svg id="r-noimg" viewBox="0 0 600 520" role="img" aria-label="Pas de photo disponible"></svg>
+            <div class="hero-text">
+              <div class="eyebrow" id="r-maker"></div>
+              <h2 id="r-name"></h2>
+              <span class="badge" id="r-status"></span>
+            </div>
+            <figcaption id="r-credit"></figcaption>
+            <button class="nav-arrow prev" id="prev" aria-label="Robot précédent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg></button>
+            <button class="nav-arrow next" id="next" aria-label="Robot suivant"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></button>
+          </figure>
+          <div class="meta">
+            <div class="glass chip"><span>Pays</span><b id="r-country"></b></div>
+            <div class="glass chip"><span>Présenté en</span><b id="r-year"></b></div>
+            <div class="glass chip"><span>Usage</span><b id="r-role"></b></div>
+          </div>
+          <div class="glass scale">
+            <h3>À l'échelle</h3>
+            <svg id="scan" viewBox="0 0 600 500" role="img" aria-label="Comparaison de taille avec un humain de 1,75 m"></svg>
+          </div>
+        </section>
+
+        <aside class="glass intel">
+          <h3>Fiche technique</h3>
+          <div id="stats"></div>
+          <div class="legend">
+            <span><i class="dot c"></i>constructeur</span>
+            <span><i class="dot p"></i>presse, revendeurs</span>
+            <span><i class="dot q"></i>non confirmé</span>
+          </div>
+          <h3>À retenir</h3>
+          <ul id="facts" class="facts"></ul>
+          <button id="brief" class="btn btn-main wide">Écouter le résumé</button>
+          <h3>Sources</h3>
+          <ul id="sources" class="sources"></ul>
+        </aside>
+      </section>
+
+      <!-- COMPARER -->
+      <section id="view-compare" class="view">
+        <div class="glass compare">
+          <h3>Comparer deux robots</h3>
+          <div class="compare-pick">
+            <select id="cmp-a" class="field" aria-label="Premier robot"></select>
+            <span class="vs">vs</span>
+            <select id="cmp-b" class="field" aria-label="Second robot"></select>
+          </div>
+          <div id="cmp-body"></div>
+        </div>
+      </section>
+
+      <!-- JOURNAL -->
+      <section id="view-journal" class="view">
+        <div class="glass journal">
+          <h3>Journal des avancées</h3>
+          <ol id="journal-list"></ol>
+        </div>
+      </section>
+    </main>
+
+    <!-- ASSISTANT : barre sur ordinateur, panneau qui se déplie sur téléphone -->
+    <footer class="vega glass" id="vega">
+      <button class="orb" id="orb" aria-label="Parler à VEGA" title="Parler à VEGA">
+        <span></span><span></span><span></span><span></span><span></span>
+      </button>
+      <div class="vega-body" id="vega-body">
+        <div class="vega-name">VEGA <em id="vega-state">en veille</em></div>
+        <div class="vega-say" id="vega-say" aria-live="polite">Pose-moi une question sur un robot.</div>
+        <div class="chips" id="chips"></div>
+      </div>
+      <button class="vega-toggle" id="vega-toggle" aria-label="Ouvrir l'assistant" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" /></svg></button>
+      <form id="ask" class="ask">
+        <input id="q" class="field" type="text" placeholder="Ex. : combien coûte le G1 ?" aria-label="Question pour VEGA" autocomplete="off" enterkeyhint="send" />
+        <button class="btn btn-main" type="submit">Demander</button>
+        <button class="btn btn-small" type="button" id="mute" aria-pressed="false">Voix : oui</button>
+      </form>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="promises.js"></script>
+    <script src="lines.js"></script>
+    <script src="app.js"></script>
+    <script src="carousel.js"></script>
+    <script src="home.js"></script>
+  </body>
+</html>
