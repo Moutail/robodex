@@ -32,7 +32,7 @@ window.ROBODEX = {
       sources: [["Tesla — page officielle", "https://www.tesla.com/AI"], ["Standard Bots — point sur Optimus en 2026", "https://standardbots.com/blog/tesla-robot"]],
     },
     {
-      id: "figure03", image: ["img/figure03.jpg", "Image : Figure AI", "50% 40%"], name: "Figure 03", maker: "Figure AI", country: "États-Unis", year: 2025, role: "Maison · usine",
+      id: "figure03", image: ["img/figure03.jpg", "Image : Figure AI", "68% 35%"], name: "Figure 03", maker: "Figure AI", country: "États-Unis", year: 2025, role: "Maison · usine",
       status: "En pilote chez BMW", aliases: ["figure", "figure 03", "figure trois", "figure 3", "figure ai"],
       height: [1.7, "P"], weight: [60, "P"], speed: [1.2, "P"], dof: null, price: null,
       notes: { height: "1,68 à 1,73 m selon les sources", speed: "vitesse de marche d'environ 4,3 km/h" },
@@ -68,7 +68,7 @@ window.ROBODEX = {
       sources: [["Gulf News — présentation de NEO", "https://gulfnews.com/technology/consumer-electronics/meet-neo-the-20000-humanoid-assistant-aiming-to-fully-automate-your-home-chores-1.500325447"], ["1X — site officiel", "https://www.1x.tech/"]],
     },
     {
-      id: "t800", image: ["img/t800.jpg", "Image : EngineAI", "50% 15%"], name: "T800", maker: "EngineAI", country: "Chine", year: 2025, role: "Combat · recherche",
+      id: "t800", image: ["img/t800.jpg", "Image : EngineAI", "45% 35%"], name: "T800", maker: "EngineAI", country: "Chine", year: 2025, role: "Combat · recherche",
       status: "En vente", aliases: ["t800", "t 800", "engine ai", "engineai", "t huit cents"],
       height: [1.73, "P"], weight: [80, "P"], speed: [3, "P"], dof: [29, "P"], price: [40500, "P"],
       notes: { weight: "75 à 85 kg selon l'édition", dof: "25 à 46 selon l'édition", price: "25 000 à 54 000 $ selon l'édition et le vendeur" },
