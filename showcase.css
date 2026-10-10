@@ -1,0 +1,67 @@
+/* Robodex — accueil en images (chargé en dernier) */
+.show { position: relative; overflow: hidden; padding: 0; height: min(78vh, 760px); min-height: 460px; }
+.show-media { position: absolute; inset: 0 0 0 34%; }
+.show-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.1s ease; }
+.show-media img.is-on { opacity: 1; animation: drift 7s linear forwards; }
+@keyframes drift { from { transform: scale(1.02); } to { transform: scale(1.12); } }
+/* La photo se fond dans la carte, du côté du texte */
+.show-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--base) 0%, transparent 34%), linear-gradient(180deg, transparent 60%, rgba(0, 0, 0, 0.45)); pointer-events: none; }
+.show-text { position: absolute; z-index: 2; left: clamp(22px, 4vw, 60px); bottom: clamp(26px, 6vh, 64px); max-width: min(46%, 560px); display: grid; gap: 14px; justify-items: start; }
+.show-text .over { font-weight: 600; font-size: 15px; color: var(--accent); }
+.show-text h1 { font-size: clamp(60px, 10vw, 150px); line-height: 0.9; letter-spacing: -0.045em; }
+.show-sub { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-family: var(--display); font-weight: 600; font-size: clamp(17px, 1.6vw, 22px); color: var(--dim); }
+.show-sub .badge { color: var(--ink); background: var(--field); border-color: var(--edge); font-family: var(--body); }
+.show-text.anim > * { animation: slide-next 0.6s var(--ease) both; }
+.show-text.anim > *:nth-child(2) { animation-delay: 0.06s; }
+.show-text.anim > *:nth-child(3) { animation-delay: 0.12s; }
+.show-text.anim > *:nth-child(4) { animation-delay: 0.18s; }
+#show-credit { position: absolute; right: 14px; top: 12px; z-index: 2; font-size: 12px; color: #fff; background: rgba(0, 0, 0, 0.42); padding: 3px 10px; border-radius: 999px; }
+.show-dots { position: absolute; z-index: 3; right: clamp(16px, 3vw, 34px); bottom: clamp(18px, 3.4vh, 30px); display: flex; gap: 6px; }
+.show-dots button { width: 34px; height: 22px; padding: 9px 0; border: 0; background: none; cursor: pointer; }
+.show-dots i { display: block; height: 4px; border-radius: 4px; background: rgba(255, 255, 255, 0.4); overflow: hidden; position: relative; }
+.show-dots button.is-on i::after { content: ""; position: absolute; inset: 0; background: #fff; transform-origin: left; animation: fill 5.5s linear forwards; }
+@keyframes fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.show .nav-arrow { opacity: 0; }
+.show:hover .nav-arrow, .show .nav-arrow:focus-visible { opacity: 1; }
+.show .nav-arrow.prev { left: calc(34% + 14px); }
+
+/* Les robots juste sous le diaporama, en grand */
+#home-robots { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+
+/* Compteurs : la photo du robot concerné en fond */
+.live > * { position: relative; z-index: 1; }
+.live .live-bg { position: absolute; z-index: 0; inset: 0 0 0 38%; width: 62%; height: 100%; object-fit: cover; opacity: 0.5; -webkit-mask-image: linear-gradient(90deg, transparent, #000 70%); mask-image: linear-gradient(90deg, transparent, #000 70%); }
+:root[data-theme="light"] .live .live-bg { opacity: 0.6; }
+
+@media (max-width: 760px) {
+  .show { height: 74vh; height: 74dvh; min-height: 440px; max-height: 640px; border-radius: 22px; }
+  .show-media { inset: 0; }
+  .show-media::after { background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 30%, rgba(0, 0, 0, 0.86) 100%); }
+  .show-text { left: 18px; right: 18px; bottom: 46px; max-width: none; color: #fff; gap: 10px; }
+  .show-text .over { color: #fff; opacity: 0.85; }
+  .show-text h1 { font-size: clamp(54px, 17vw, 84px); }
+  .show-sub { color: rgba(255, 255, 255, 0.86); }
+  .show-sub .badge { color: #fff; background: rgba(255, 255, 255, 0.2); border-color: rgba(255, 255, 255, 0.4); }
+  .show .home-actions { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
+  .show .home-actions .btn { flex: none; padding: 11px 8px; }
+  .show .home-actions .btn:not(.btn-main) { color: #fff; background: rgba(255, 255, 255, 0.16); border-color: rgba(255, 255, 255, 0.36); }
+  .show-dots { left: 18px; right: 18px; bottom: 12px; }
+  .show-dots button { flex: 1; width: auto; }
+  .show .nav-arrow { display: none; }
+  .live .live-bg { inset: 0 0 0 30%; width: 70%; opacity: 0.38; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .show-media img.is-on { animation: none; }
+  .show-dots button.is-on i::after { animation: none; }
+}
+
+/* Crédit sur une seule ligne, et diaporama entièrement visible au-dessus de l'assistant sur téléphone */
+#show-credit { max-width: calc(100% - 28px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 760px) {
+  .show { height: 66vh; height: 66dvh; min-height: 420px; }
+  #show-credit { font-size: 11px; }
+}
+
+@media (min-width: 761px) {
+  .show { height: min(70vh, 720px); }
+}

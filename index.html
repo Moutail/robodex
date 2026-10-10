@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="motion.css" />
     <link rel="stylesheet" href="carousel.css" />
     <link rel="stylesheet" href="home.css" />
+    <link rel="stylesheet" href="showcase.css" />
     <script>
       // Thème appliqué avant l'affichage pour éviter un flash
       try {
@@ -58,14 +59,26 @@
     <main>
       <!-- ACCUEIL -->
       <section id="view-home" class="view is-on">
-        <div class="glass home-hero">
-          <span class="over">Robots humanoïdes</span>
-          <h1>Ce qui est promis.<br /><em>Ce qui est prouvé.</em></h1>
-          <p>Les fabricants annoncent des milliers de robots, des prix cassés et des dates. Robodex note chaque promesse, attend l'échéance, et regarde ce qui s'est vraiment passé, sources à l'appui.</p>
-          <div class="home-actions">
-            <button class="btn btn-main" id="home-cta-promises">Voir les promesses</button>
-            <button class="btn" id="home-cta-robots">Explorer les robots</button>
+        <div class="glass show" id="show">
+          <div class="show-media"><img id="show-a" alt="" /><img id="show-b" alt="" /></div>
+          <span id="show-credit"></span>
+          <div class="show-text" id="show-text">
+            <span class="over">Robots humanoïdes · promis ou prouvé ?</span>
+            <h1 id="show-name"></h1>
+            <div class="show-sub"><span id="show-maker"></span><span class="badge" id="show-status"></span></div>
+            <div class="home-actions">
+              <button class="btn btn-main" id="show-open" type="button">Voir la fiche</button>
+              <button class="btn" id="home-cta-promises" type="button">Les promesses</button>
+            </div>
           </div>
+          <button class="nav-arrow prev" id="show-prev" aria-label="Robot précédent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg></button>
+          <button class="nav-arrow next" id="show-next" aria-label="Robot suivant"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></button>
+          <div class="show-dots" id="show-dots"></div>
+        </div>
+
+        <div class="glass home-block">
+          <div class="block-head"><h3>Les <span id="n-robots">0</span> robots</h3><button class="link" id="home-cta-robots" type="button">Tout explorer</button></div>
+          <div id="home-robots"></div>
         </div>
 
         <div class="home-live">
@@ -109,11 +122,6 @@
             <div class="block-head"><h3>Dernières avancées</h3><button class="link" id="home-cta-news" type="button">Tout le journal</button></div>
             <ul id="home-news"></ul>
           </div>
-        </div>
-
-        <div class="glass home-block">
-          <div class="block-head"><h3>Les <span id="n-robots">0</span> robots de la base</h3></div>
-          <div id="home-robots"></div>
         </div>
       </section>
 
@@ -220,5 +228,6 @@
     <script src="app.js"></script>
     <script src="carousel.js"></script>
     <script src="home.js"></script>
+    <script src="showcase.js"></script>
   </body>
 </html>
