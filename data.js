@@ -5,13 +5,13 @@ window.ROBODEX = {
   updated: "10.10.2026",
   robots: [
     {
-      id: "g1", image: ["img/g1.jpg", "Photo : Sayanesy · CC0 (Wikimedia Commons)", "50% 22%"], name: "G1", maker: "Unitree", country: "Chine", year: 2024, role: "Recherche · grand public",
+      id: "g1", image: ["img/g1.jpg", "Image : Unitree", "38% 50%"], name: "G1", maker: "Unitree", country: "Chine", year: 2024, role: "Recherche · grand public",
       status: "En vente", aliases: ["g1", "unitree g1", "g un"],
-      height: [1.3, "P"], weight: [35, "P"], speed: [2, "P"], dof: [23, "P"], price: [16000, "P"],
-      notes: { height: "1,27 à 1,32 m selon les sources", dof: "jusqu'à 43 en version EDU", price: "prix annoncé au lancement, version de base" },
+      height: [1.3, "C"], weight: [35, "C"], speed: [2, "P"], dof: [23, "P"], price: [16000, "P"],
+      notes: { height: "environ 130 cm selon Unitree", dof: "jusqu'à 43 en version EDU", price: "prix annoncé au lancement, version de base" },
       summary: "Le G1 est le petit humanoïde d'Unitree : environ un mètre trente, trente-cinq kilos, et un prix de lancement annoncé à seize mille dollars. C'est le robot le plus utilisé dans les combats de robots humanoïdes.",
       facts: ["Environ 2 heures d'autonomie", "Modèle utilisé pour le tournoi de Hangzhou (mai 2025) et le match de San Francisco (février 2026)", "Lidar 3D et caméra de profondeur"],
-      sources: [["Robotics 24/7 — lancement à 16 000 $", "https://robotics247.com/article/unitree_robotics_debuts_new_g1_humanoid_with_16k_price_tag/lidar"], ["Génération Robots — fiche G1", "https://generationrobots.com/en/404241-g1-humanoid-robot.html"]],
+      sources: [["Robotics 24/7 — lancement à 16 000 $", "https://robotics247.com/article/unitree_robotics_debuts_new_g1_humanoid_with_16k_price_tag/lidar"], ["Unitree — page officielle du G1", "https://www.unitree.com/g1"]],
     },
     {
       id: "h1", image: ["img/h1.jpg", "Image : Unitree", "50% 20%"], name: "H1", maker: "Unitree", country: "Chine", year: 2023, role: "Recherche",
