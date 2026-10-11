@@ -8,7 +8,7 @@ window.ROBODEX.promises = [
     title: "10 000 robots Optimus construits en 2025",
     promise: "Elon Musk annonce environ 10 000 Optimus construits dans l'année, dont un millier au travail dans les usines Tesla.",
     reality: "L'objectif est manqué. En janvier 2026, Musk reconnaît qu'aucun Optimus ne fait de travail utile dans les usines ; quelques centaines d'unités servent à l'apprentissage.",
-    sources: [["Electrek", "https://electrek.co/?p=474295"], ["Fortune, 22 janvier 2026", "https://fortune.com/2026/01/22/elon-musk-agonizingly-slow-cybercab-optimus-robot-rollout-tesla/"], ["Nasdaq / Zacks", "https://www.nasdaq.com/articles/why-teslas-optimus-story-more-promise-progress"]],
+    sources: [["Electrek", "https://electrek.co/2026/01/28/musk-admits-no-optimus-robots-are-doing-useful-work-at-tesla-after-claiming-otherwise/"], ["Fortune, 22 janvier 2026", "https://fortune.com/2026/01/22/elon-musk-agonizingly-slow-cybercab-optimus-robot-rollout-tesla/"], ["Nasdaq / Zacks", "https://www.nasdaq.com/articles/why-teslas-optimus-story-more-promise-progress"]],
   },
   {
     id: "tesla-vente", brand: "Tesla", robot: "optimus", status: "pending", said: "2024-07", due: "2026-12-31",
@@ -72,5 +72,12 @@ window.ROBODEX.promises = [
     promise: "Unitree présente le R1 à partir de 39 999 yuans, soit environ 5 900 dollars.",
     reality: "Le R1 est bien mis en vente à l'international en avril 2026, mais autour de 8 150 dollars avec les frais d'importation, pour des livraisons annoncées fin juin 2026.",
     sources: [["AI Business", "https://aibusiness.com/automation/humanoid-robot-priced-under-6k-unveiled"], ["VnExpress — mise en vente", "https://e.vnexpress.net/news/tech/enterprises/unitree-starts-selling-cheapest-humanoid-robot-from-6-800-5063068.html"]],
+  },
+  {
+    id: "engineai-ceinture", brand: "EngineAI", robot: "t800", status: "pending", said: "2026-02", due: "2026-12-31",
+    title: "Une ceinture en or de 10 kg pour l'équipe gagnante",
+    promise: "En lançant sa ligue de combat de robots URKL, EngineAI promet à l'équipe championne une ceinture en or de 10 kg, d'une valeur annoncée de 10 millions de yuans.",
+    reality: "Les premiers combats ont eu lieu à Shenzhen en juillet 2026. Les finales sont annoncées pour la fin de l'année : la ceinture n'a pas encore été remise.",
+    sources: [["Gouvernement de Shenzhen", "https://www.sz.gov.cn/en_szgov/news/infocus/aisz/news/content/post_12647297.html"], ["TVB News — premiers combats", "https://news.tvb.com/en/1183656-HumanoidrobotfightingleaguemakesdebutinShenzhen"]],
   },
 ];
