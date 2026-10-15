@@ -25,6 +25,22 @@
         const t = localStorage.getItem("robodex-theme") || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
         document.documentElement.dataset.theme = t;
       } catch (e) {}
+      // Langue : ?lang=en ou ?lang=fr dans l'adresse, sinon le dernier choix du visiteur, sinon le français
+      (() => {
+        let l = null;
+        try {
+          l = new URLSearchParams(location.search).get("lang");
+        } catch (e) {}
+        try {
+          if (l === "en" || l === "fr") localStorage.setItem("robodex-lang", l);
+          else l = localStorage.getItem("robodex-lang");
+        } catch (e) {}
+        document.documentElement.lang = l === "en" ? "en" : "fr";
+        // Retour après un changement de langue : l'écran de démarrage ne réapparaît pas
+        try {
+          if (sessionStorage.getItem("robodex-resume")) document.documentElement.classList.add("is-resuming");
+        } catch (e) {}
+      })();
     </script>
   </head>
   <body>
@@ -36,9 +52,10 @@
       <div class="boot-inner glass">
         <div class="boot-orb" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
         <h1>Robodex</h1>
-        <p>Robots humanoïdes : ce qui est promis, ce qui est prouvé</p>
-        <button id="boot-start" class="btn btn-main">Entrer avec la voix</button>
-        <button id="boot-silent" class="btn">Entrer sans la voix</button>
+        <p data-i18n="boot.tagline">Robots humanoïdes : ce qui est promis, ce qui est prouvé</p>
+        <button id="boot-start" class="btn btn-main" data-i18n="boot.voice">Entrer avec la voix</button>
+        <button id="boot-silent" class="btn" data-i18n="boot.silent">Entrer sans la voix</button>
+        <div class="lang" role="group" aria-label="Langue" data-i18n-attr="aria-label:lang.group"><button type="button" data-lang="fr" lang="fr" aria-label="Français">FR</button><button type="button" data-lang="en" lang="en" aria-label="English">EN</button></div>
       </div>
     </div>
 
@@ -46,13 +63,14 @@
       <div class="brand">Robodex</div>
       <nav class="tabs" aria-label="Sections">
         <span class="tab-pill" aria-hidden="true"></span>
-        <button class="tab is-on" data-view="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z" /></svg><span>Accueil</span></button>
-        <button class="tab" data-view="promises"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" /><path d="M12 8v4l3 2" /></svg><span>Promesses</span></button>
-        <button class="tab" data-view="base"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="2" /><rect x="13" y="4" width="7" height="7" rx="2" /><rect x="4" y="13" width="7" height="7" rx="2" /><rect x="13" y="13" width="7" height="7" rx="2" /></svg><span>Robots</span></button>
-        <button class="tab" data-view="compare"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16M17 4v16M3 9h8M13 15h8" /></svg><span>Comparer</span></button>
-        <button class="tab" data-view="journal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M5 12h14M5 18h9" /></svg><span>Journal</span></button>
+        <button class="tab is-on" data-view="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z" /></svg><span data-i18n="tab.home">Accueil</span></button>
+        <button class="tab" data-view="promises"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" /><path d="M12 8v4l3 2" /></svg><span data-i18n="tab.promises">Promesses</span></button>
+        <button class="tab" data-view="base"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="2" /><rect x="13" y="4" width="7" height="7" rx="2" /><rect x="4" y="13" width="7" height="7" rx="2" /><rect x="13" y="13" width="7" height="7" rx="2" /></svg><span data-i18n="tab.robots">Robots</span></button>
+        <button class="tab" data-view="compare"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16M17 4v16M3 9h8M13 15h8" /></svg><span data-i18n="tab.compare">Comparer</span></button>
+        <button class="tab" data-view="journal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M5 12h14M5 18h9" /></svg><span data-i18n="tab.journal">Journal</span></button>
       </nav>
-      <div class="status"><span id="count">0</span> robots · mis à jour le <span id="updated"></span></div>
+      <div class="status"><span id="count">0</span> <span data-i18n="top.updated">robots · mis à jour le</span> <span id="updated"></span></div>
+      <div class="lang" role="group" aria-label="Langue" data-i18n-attr="aria-label:lang.group"><button type="button" data-lang="fr" lang="fr" aria-label="Français">FR</button><button type="button" data-lang="en" lang="en" aria-label="English">EN</button></div>
       <button id="theme" class="btn btn-small" type="button">Mode clair</button>
     </header>
 
@@ -63,63 +81,63 @@
           <div class="show-media"><img id="show-a" alt="" /><img id="show-b" alt="" /></div>
           <span id="show-credit"></span>
           <div class="show-text" id="show-text">
-            <span class="over">Robots humanoïdes · promis ou prouvé ?</span>
+            <span class="over" data-i18n="show.over">Robots humanoïdes · promis ou prouvé ?</span>
             <h1 id="show-name"></h1>
             <div class="show-sub"><span id="show-maker"></span><span class="badge" id="show-status"></span></div>
             <div class="home-actions">
-              <button class="btn btn-main" id="show-open" type="button">Voir la fiche</button>
-              <button class="btn" id="home-cta-promises" type="button">Les promesses</button>
+              <button class="btn btn-main" id="show-open" type="button" data-i18n="show.open">Voir la fiche</button>
+              <button class="btn" id="home-cta-promises" type="button" data-i18n="show.promises">Les promesses</button>
             </div>
           </div>
-          <button class="nav-arrow prev" id="show-prev" aria-label="Robot précédent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg></button>
-          <button class="nav-arrow next" id="show-next" aria-label="Robot suivant"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></button>
+          <button class="nav-arrow prev" id="show-prev" aria-label="Robot précédent" data-i18n-attr="aria-label:nav.prev"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg></button>
+          <button class="nav-arrow next" id="show-next" aria-label="Robot suivant" data-i18n-attr="aria-label:nav.next"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></button>
           <div class="show-dots" id="show-dots"></div>
         </div>
 
         <div class="glass home-block">
-          <div class="block-head"><h3>Les <span id="n-robots">0</span> robots</h3><button class="link" id="home-cta-robots" type="button">Tout explorer</button></div>
+          <div class="block-head"><h3><span data-i18n="home.the">Les</span> <span id="n-robots">0</span> <span data-i18n="home.robots">robots</span></h3><button class="link" id="home-cta-robots" type="button" data-i18n="home.explore">Tout explorer</button></div>
           <div id="home-robots"></div>
         </div>
 
         <div class="home-live">
           <article class="glass live" id="live-late">
             <span class="kicker"></span>
-            <div class="days"><span id="late-d">0</span><small>jours</small></div>
+            <div class="days"><span id="late-d">0</span><small data-i18n="live.days">jours</small></div>
             <div class="hms" id="late-hms"></div>
             <h3></h3>
             <div class="who"></div>
-            <button class="btn btn-small" type="button">Voir le détail</button>
+            <button class="btn btn-small" type="button" data-i18n="live.more">Voir le détail</button>
           </article>
           <article class="glass live next" id="live-next">
             <span class="kicker"></span>
-            <div class="days"><span id="next-due-d">0</span><small>jours</small></div>
+            <div class="days"><span id="next-due-d">0</span><small data-i18n="live.days">jours</small></div>
             <div class="hms" id="next-due-hms"></div>
             <h3></h3>
             <div class="who"></div>
-            <button class="btn btn-small" type="button">Voir le détail</button>
+            <button class="btn btn-small" type="button" data-i18n="live.more">Voir le détail</button>
           </article>
         </div>
 
         <div class="home-nums">
-          <div class="glass num"><b id="n-total">0</b><span>promesses suivies</span></div>
-          <div class="glass num ok"><b id="n-ok">0</b><span>tenues</span></div>
-          <div class="glass num bad"><b id="n-bad">0</b><span>non tenues ou contestées</span></div>
-          <div class="glass num"><b id="n-wait">0</b><span>en attente de preuve</span></div>
+          <div class="glass num"><b id="n-total">0</b><span data-i18n="num.total">promesses suivies</span></div>
+          <div class="glass num ok"><b id="n-ok">0</b><span data-i18n="num.ok">tenues</span></div>
+          <div class="glass num bad"><b id="n-bad">0</b><span data-i18n="num.bad">non tenues ou contestées</span></div>
+          <div class="glass num"><b id="n-wait">0</b><span data-i18n="num.wait">en attente de preuve</span></div>
         </div>
 
         <div class="home-cols">
           <div class="glass home-block">
-            <div class="block-head"><h3>Le tableau des marques</h3></div>
+            <div class="block-head"><h3 data-i18n="board.title">Le tableau des marques</h3></div>
             <div id="scoreboard"></div>
             <div class="score-legend">
-              <span><i style="background: var(--ok)"></i>tenue</span>
-              <span><i style="background: var(--mid)"></i>en partie, ou sans preuve</span>
-              <span><i style="background: var(--bad)"></i>non tenue, contestée</span>
-              <span><i style="background: var(--wait)"></i>en cours</span>
+              <span><i style="background: var(--ok)"></i><span data-i18n="legend.ok">tenue</span></span>
+              <span><i style="background: var(--mid)"></i><span data-i18n="legend.mid">en partie, ou sans preuve</span></span>
+              <span><i style="background: var(--bad)"></i><span data-i18n="legend.bad">non tenue, contestée</span></span>
+              <span><i style="background: var(--wait)"></i><span data-i18n="legend.wait">en cours</span></span>
             </div>
           </div>
           <div class="glass home-block">
-            <div class="block-head"><h3>Dernières avancées</h3><button class="link" id="home-cta-news" type="button">Tout le journal</button></div>
+            <div class="block-head"><h3 data-i18n="news.title">Dernières avancées</h3><button class="link" id="home-cta-news" type="button" data-i18n="news.all">Tout le journal</button></div>
             <ul id="home-news"></ul>
           </div>
         </div>
@@ -128,8 +146,8 @@
       <!-- PROMESSES -->
       <section id="view-promises" class="view">
         <div class="glass promise-intro">
-          <h2>Promesse contre réalité</h2>
-          <p>Chaque carte reprend une annonce d'un fabricant, sa date et son échéance, puis ce que des sources indépendantes ont constaté. Une promesse sans source n'entre pas dans la liste.</p>
+          <h2 data-i18n="promises.title">Promesse contre réalité</h2>
+          <p data-i18n="promises.intro">Chaque carte reprend une annonce d'un fabricant, sa date et son échéance, puis ce que des sources indépendantes ont constaté. Une promesse sans source n'entre pas dans la liste.</p>
           <div id="promise-filters"></div>
         </div>
         <div id="promise-list"></div>
@@ -138,46 +156,46 @@
       <!-- ROBOTS -->
       <section id="view-base" class="view">
         <aside class="glass roster">
-          <input id="search" class="field" type="search" placeholder="Rechercher un robot, un pays…" aria-label="Rechercher" />
+          <input id="search" class="field" type="search" placeholder="Rechercher un robot, un pays…" aria-label="Rechercher" data-i18n-attr="placeholder:search.ph;aria-label:search.label" />
           <ul id="roster-list"></ul>
         </aside>
 
         <section class="stage">
           <figure class="hero glass" id="hero">
             <img id="r-img" alt="" />
-            <svg id="r-noimg" viewBox="0 0 600 520" role="img" aria-label="Pas de photo disponible"></svg>
+            <svg id="r-noimg" viewBox="0 0 600 520" role="img" aria-label="Pas de photo disponible" data-i18n-attr="aria-label:nophoto"></svg>
             <div class="hero-text">
               <div class="eyebrow" id="r-maker"></div>
               <h2 id="r-name"></h2>
               <span class="badge" id="r-status"></span>
             </div>
             <figcaption id="r-credit"></figcaption>
-            <button class="nav-arrow prev" id="prev" aria-label="Robot précédent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg></button>
-            <button class="nav-arrow next" id="next" aria-label="Robot suivant"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></button>
+            <button class="nav-arrow prev" id="prev" aria-label="Robot précédent" data-i18n-attr="aria-label:nav.prev"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg></button>
+            <button class="nav-arrow next" id="next" aria-label="Robot suivant" data-i18n-attr="aria-label:nav.next"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></button>
           </figure>
           <div class="meta">
-            <div class="glass chip"><span>Pays</span><b id="r-country"></b></div>
-            <div class="glass chip"><span>Présenté en</span><b id="r-year"></b></div>
-            <div class="glass chip"><span>Usage</span><b id="r-role"></b></div>
+            <div class="glass chip"><span data-i18n="chip.country">Pays</span><b id="r-country"></b></div>
+            <div class="glass chip"><span data-i18n="chip.year">Présenté en</span><b id="r-year"></b></div>
+            <div class="glass chip"><span data-i18n="chip.role">Usage</span><b id="r-role"></b></div>
           </div>
           <div class="glass scale">
-            <h3>À l'échelle</h3>
-            <svg id="scan" viewBox="0 0 600 500" role="img" aria-label="Comparaison de taille avec un humain de 1,75 m"></svg>
+            <h3 data-i18n="scale.title">À l'échelle</h3>
+            <svg id="scan" viewBox="0 0 600 500" role="img" aria-label="Comparaison de taille avec un humain de 1,75 m" data-i18n-attr="aria-label:scale.label"></svg>
           </div>
         </section>
 
         <aside class="glass intel">
-          <h3>Fiche technique</h3>
+          <h3 data-i18n="intel.title">Fiche technique</h3>
           <div id="stats"></div>
           <div class="legend">
-            <span><i class="dot c"></i>constructeur</span>
-            <span><i class="dot p"></i>presse, revendeurs</span>
-            <span><i class="dot q"></i>non confirmé</span>
+            <span><i class="dot c"></i><span data-i18n="legend.c">constructeur</span></span>
+            <span><i class="dot p"></i><span data-i18n="legend.p">presse, revendeurs</span></span>
+            <span><i class="dot q"></i><span data-i18n="legend.q">non confirmé</span></span>
           </div>
-          <h3>À retenir</h3>
+          <h3 data-i18n="facts.title">À retenir</h3>
           <ul id="facts" class="facts"></ul>
-          <button id="brief" class="btn btn-main wide">Écouter le résumé</button>
-          <h3>Sources</h3>
+          <button id="brief" class="btn btn-main wide" data-i18n="brief">Écouter le résumé</button>
+          <h3 data-i18n="sources.title">Sources</h3>
           <ul id="sources" class="sources"></ul>
         </aside>
       </section>
@@ -185,11 +203,11 @@
       <!-- COMPARER -->
       <section id="view-compare" class="view">
         <div class="glass compare">
-          <h3>Comparer deux robots</h3>
+          <h3 data-i18n="cmp.title">Comparer deux robots</h3>
           <div class="compare-pick">
-            <select id="cmp-a" class="field" aria-label="Premier robot"></select>
+            <select id="cmp-a" class="field" aria-label="Premier robot" data-i18n-attr="aria-label:cmp.a"></select>
             <span class="vs">vs</span>
-            <select id="cmp-b" class="field" aria-label="Second robot"></select>
+            <select id="cmp-b" class="field" aria-label="Second robot" data-i18n-attr="aria-label:cmp.b"></select>
           </div>
           <div id="cmp-body"></div>
         </div>
@@ -198,7 +216,7 @@
       <!-- JOURNAL -->
       <section id="view-journal" class="view">
         <div class="glass journal">
-          <h3>Journal des avancées</h3>
+          <h3 data-i18n="journal.title">Journal des avancées</h3>
           <ol id="journal-list"></ol>
         </div>
       </section>
@@ -206,24 +224,25 @@
 
     <!-- ASSISTANT : barre sur ordinateur, panneau qui se déplie sur téléphone -->
     <footer class="vega glass" id="vega">
-      <button class="orb" id="orb" aria-label="Parler à VEGA" title="Parler à VEGA">
+      <button class="orb" id="orb" aria-label="Parler à VEGA" title="Parler à VEGA" data-i18n-attr="aria-label:vega.talk;title:vega.talk">
         <span></span><span></span><span></span><span></span><span></span>
       </button>
       <div class="vega-body" id="vega-body">
         <div class="vega-name">VEGA <em id="vega-state">en veille</em></div>
-        <div class="vega-say" id="vega-say" aria-live="polite">Pose-moi une question sur un robot.</div>
+        <div class="vega-say" id="vega-say" aria-live="polite" data-i18n="vega.hello">Pose-moi une question sur un robot.</div>
         <div class="chips" id="chips"></div>
       </div>
-      <button class="vega-toggle" id="vega-toggle" aria-label="Ouvrir l'assistant" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" /></svg></button>
+      <button class="vega-toggle" id="vega-toggle" aria-label="Ouvrir l'assistant" data-i18n-attr="aria-label:vega.open" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" /></svg></button>
       <form id="ask" class="ask">
-        <input id="q" class="field" type="text" placeholder="Ex. : combien coûte le G1 ?" aria-label="Question pour VEGA" autocomplete="off" enterkeyhint="send" />
-        <button class="btn btn-main" type="submit">Demander</button>
+        <input id="q" class="field" type="text" placeholder="Ex. : combien coûte le G1 ?" aria-label="Question pour VEGA" data-i18n-attr="placeholder:ask.ph;aria-label:ask.label" autocomplete="off" enterkeyhint="send" />
+        <button class="btn btn-main" type="submit" data-i18n="ask.send">Demander</button>
         <button class="btn btn-small" type="button" id="mute" aria-pressed="false">Voix : oui</button>
       </form>
     </footer>
 
     <script src="data.js"></script>
     <script src="promises.js"></script>
+    <script src="i18n.js"></script>
     <script src="lines.js"></script>
     <script src="app.js"></script>
     <script src="carousel.js"></script>

@@ -7,7 +7,10 @@ Un site statique (HTML, CSS, JavaScript, sans serveur) qui suit les annonces des
 - `data.js` — les fiches des robots et le journal des avancées
 - `promises.js` — les promesses, leur échéance, leur statut et leurs sources
 - `lines.js` — les phrases de l'assistant vocal VEGA, construites à partir des données
-- `audio/` — ces phrases, enregistrées
+- `i18n.js` — la version anglaise : textes de l'interface, et sélecteur FR | EN (le choix est retenu ; lien direct : `?lang=en`)
+- `audio/` — ces phrases, enregistrées en français (en anglais, VEGA utilise la voix du navigateur)
+
+Chaque fiche, entrée du journal et promesse porte sa traduction anglaise dans un champ `en`, à côté du texte français.
 
 ## Crédits des images
 
@@ -21,6 +24,8 @@ Un site statique (HTML, CSS, JavaScript, sans serveur) qui suit les annonces des
 | Digit | Agility |
 | NEO | 1X |
 | T800 | EngineAI |
+
+Le Unitree H2, le UBTech Walker S2 et l'Apptronik Apollo n'ont pas encore de photo : le site affiche un schéma à la place.
 
 Les images des constructeurs leur appartiennent ; elles sont utilisées ici à titre d'illustration, sans but commercial, et seront retirées sur simple demande.
 

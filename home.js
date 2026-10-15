@@ -11,21 +11,9 @@
     return n;
   };
   const robot = (id) => DB.robots.find((r) => r.id === id);
-  const MONTHS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
-  const frDate = (d) => {
-    if (!d) return "";
-    const [y, m, day] = d.split("-");
-    return `${day ? Number(day) + " " : ""}${m ? MONTHS[Number(m) - 1] + " " : ""}${y}`;
-  };
-  const STATUS = {
-    kept: ["Tenue", "ok"],
-    partial: ["Tenue en partie", "mid"],
-    missed: ["Non tenue", "bad"],
-    disputed: ["Contestée", "bad"],
-    unproven: ["Sans preuve publique", "mid"],
-    pending: ["En cours", "wait"],
-    open: ["Sans échéance", "wait"],
-  };
+  const { T, fmtDate: frDate } = window.ROBODEX_I18N;
+  const TONE = { kept: "ok", partial: "mid", missed: "bad", disputed: "bad", unproven: "mid", pending: "wait", open: "wait" };
+  const STATUS = Object.fromEntries(Object.entries(TONE).map(([k, tone]) => [k, [T(`status.${k}`), tone]]));
   const DAY = 86400000;
   const endOf = (d) => new Date(`${d}T23:59:59`);
 
@@ -48,14 +36,14 @@
     head.append(el("span", "brand-tag", p.brand), el("span", `state ${tone}`, label));
     c.append(head, el("h4", "", p.title));
     const when = [];
-    if (p.said) when.push(`Annoncé en ${frDate(p.said)}`);
-    if (p.due) when.push(`échéance : ${frDate(p.due)}`);
+    if (p.said) when.push(T("p.said", { d: frDate(p.said) }));
+    if (p.due) when.push(T("p.due", { d: frDate(p.due) }));
     if (when.length) c.append(el("div", "when", when.join(" · ")));
     const two = el("div", "two");
     const a = el("div");
-    a.append(el("span", "k", "La promesse"), el("p", "", p.promise));
+    a.append(el("span", "k", T("p.promise")), el("p", "", p.promise));
     const b = el("div");
-    b.append(el("span", "k", "La réalité"), el("p", "", p.reality));
+    b.append(el("span", "k", T("p.reality")), el("p", "", p.reality));
     two.append(a, b);
     c.append(two);
     const foot = el("div", "promise-foot");
@@ -66,7 +54,7 @@
       link.rel = "noopener";
       foot.append(link);
     });
-    const open = el("button", "", `Fiche ${robot(p.robot).name}`);
+    const open = el("button", "", T("p.open", { name: robot(p.robot).name }));
     open.type = "button";
     open.addEventListener("click", () => openRobot(p.robot));
     foot.append(open);
@@ -82,7 +70,7 @@
   };
   const brands = [...new Set(P.map((p) => p.brand))];
   const filters = $("#promise-filters");
-  [["all", "Toutes"], ...brands.map((b) => [b, b])].forEach(([value, label], i) => {
+  [["all", T("p.all")], ...brands.map((b) => [b, b])].forEach(([value, label], i) => {
     const b = el("button", i ? "" : "is-on", label);
     b.type = "button";
     b.addEventListener("click", () => {
@@ -108,7 +96,7 @@
       seg.title = `${n}`;
       bar.append(seg);
     });
-    row.append(bar, el("span", "score-count", `${mine.length} promesse${mine.length > 1 ? "s" : ""}`));
+    row.append(bar, el("span", "score-count", T(mine.length > 1 ? "p.countN" : "p.count1", { n: mine.length })));
     row.addEventListener("click", () => {
       goTo("promises");
       [...filters.querySelectorAll("button")].find((b) => b.textContent === brand)?.click();
@@ -132,14 +120,14 @@
     if (!p) return root.remove();
     root.querySelector(".kicker").textContent = kicker;
     root.querySelector("h3").textContent = p.title;
-    root.querySelector(".who").textContent = `${p.brand} · échéance : ${frDate(p.due)}`;
+    root.querySelector(".who").textContent = T("live.who", { brand: p.brand, d: frDate(p.due) });
     root.querySelector("button").addEventListener("click", () => {
       goTo("promises");
       setTimeout(() => document.getElementById(`p-${p.id}`)?.scrollIntoView({ block: "center" }), 80);
     });
   };
-  fill($("#live-late"), late, "Promesse non tenue · retard");
-  fill($("#live-next"), next, "Prochaine échéance · il reste");
+  fill($("#live-late"), late, T("live.late"));
+  fill($("#live-next"), next, T("live.next"));
   const two = (n) => String(n).padStart(2, "0");
   const tick = () => {
     const now = Date.now();

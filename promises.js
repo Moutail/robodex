@@ -1,7 +1,8 @@
 // Robodex — « Promesse contre réalité ». Chaque entrée : ce qu'une marque a annoncé, quand, pour quand, et ce qui s'est passé.
 // Statuts : kept (tenue), partial (tenue en partie), missed (non tenue), disputed (contestée),
 //           unproven (aucune preuve publique), pending (en cours), open (sans échéance).
-// Vérifié le 10 octobre 2026. Une promesse sans source n'entre pas dans cette liste.
+// Chaque promesse a sa traduction anglaise dans `en` (en.sources = les libellés des sources, dans le même ordre).
+// Vérifié le 15 octobre 2026. Une promesse sans source n'entre pas dans cette liste.
 window.ROBODEX.promises = [
   {
     id: "tesla-10000", brand: "Tesla", robot: "optimus", status: "missed", said: "2025", due: "2025-12-31",
@@ -9,13 +10,51 @@ window.ROBODEX.promises = [
     promise: "Elon Musk annonce environ 10 000 Optimus construits dans l'année, dont un millier au travail dans les usines Tesla.",
     reality: "L'objectif est manqué. En janvier 2026, Musk reconnaît qu'aucun Optimus ne fait de travail utile dans les usines ; quelques centaines d'unités servent à l'apprentissage.",
     sources: [["Electrek", "https://electrek.co/2026/01/28/musk-admits-no-optimus-robots-are-doing-useful-work-at-tesla-after-claiming-otherwise/"], ["Fortune, 22 janvier 2026", "https://fortune.com/2026/01/22/elon-musk-agonizingly-slow-cybercab-optimus-robot-rollout-tesla/"], ["Nasdaq / Zacks", "https://www.nasdaq.com/articles/why-teslas-optimus-story-more-promise-progress"]],
+    en: {
+      title: "10,000 Optimus robots built in 2025",
+      promise: "Elon Musk announces about 10,000 Optimus built during the year, including a thousand working in Tesla factories.",
+      reality: "The target was missed. In January 2026, Musk acknowledges that no Optimus is doing useful work in the factories; a few hundred units are used for training.",
+      sources: ["Electrek", "Fortune, January 22, 2026", "Nasdaq / Zacks"],
+    },
+  },
+  {
+    id: "tesla-v3", brand: "Tesla", robot: "optimus", status: "missed", said: "2026-04", due: "2026-08-31",
+    title: "Optimus 3 dévoilé au milieu de 2026",
+    promise: "Tesla prévoyait de dévoiler Optimus 3 au premier trimestre 2026. En avril, Musk repousse la présentation à « probablement le milieu de l'année », et annonce le début de la production à Fremont pour fin juillet ou août.",
+    reality: "Au 15 octobre 2026, nous n'avons trouvé aucune présentation officielle d'Optimus 3 : ni design final, ni fiche technique, ni prix.",
+    sources: [["Electrek, 22 avril 2026", "https://electrek.co/2026/04/22/tesla-optimus-production-fremont-model-sx-line/"], ["Electrek, 2 juillet 2026", "https://electrek.co/2026/07/02/musk-shuts-down-optimus-4d-chess-theory/"]],
+    en: {
+      title: "Optimus 3 unveiled in mid-2026",
+      promise: "Tesla planned to unveil Optimus 3 in the first quarter of 2026. In April, Musk pushes the presentation back to \"probably the middle of this year\", and announces that production will start in Fremont in late July or August.",
+      reality: "As of October 15, 2026, we found no official presentation of Optimus 3: no final design, no spec sheet, no price.",
+      sources: ["Electrek, April 22, 2026", "Electrek, July 2, 2026"],
+    },
   },
   {
     id: "tesla-vente", brand: "Tesla", robot: "optimus", status: "pending", said: "2024-07", due: "2026-12-31",
     title: "Optimus vendu à d'autres entreprises en 2026",
     promise: "Musk écrit que Tesla aura des robots en petite production pour son usage interne en 2025 et, « espérons-le », en grande production pour d'autres entreprises en 2026.",
-    reality: "À l'été 2026, Optimus n'est toujours pas en vente et aucune précommande n'est ouverte. La production de la version 3 est annoncée pour plus tard dans l'année.",
-    sources: [["Digital Trends", "https://digitaltrends.com/?p=3652284"], ["Standard Bots, point 2026", "https://standardbots.com/blog/tesla-robot"]],
+    reality: "En avril 2026, Musk annonce le début de la production à Fremont pour fin juillet ou août, à un rythme « impossible à prévoir ». Au 15 octobre 2026, Optimus n'est toujours pas en vente et aucune précommande n'est ouverte.",
+    sources: [["Digital Trends", "https://digitaltrends.com/?p=3652284"], ["Standard Bots, point 2026", "https://standardbots.com/blog/tesla-robot"], ["Electrek, 22 avril 2026", "https://electrek.co/2026/04/22/tesla-optimus-production-fremont-model-sx-line/"]],
+    en: {
+      title: "Optimus sold to other companies in 2026",
+      promise: "Musk writes that Tesla will have robots in low production for its internal use in 2025 and, \"hopefully\", in high production for other companies in 2026.",
+      reality: "In April 2026, Musk announces that production will start in Fremont in late July or August, at a rate that is \"impossible to predict\". As of October 15, 2026, Optimus is still not on sale and no pre-orders are open.",
+      sources: ["Digital Trends", "Standard Bots, 2026 update", "Electrek, April 22, 2026"],
+    },
+  },
+  {
+    id: "tesla-public", brand: "Tesla", robot: "optimus", status: "pending", said: "2026-01-22", due: "2027-12-31",
+    title: "Optimus vendu au grand public fin 2027",
+    promise: "À Davos, Musk déclare : « D'ici la fin de l'an prochain, je pense que nous vendrons des robots humanoïdes au public », une fois la fiabilité, la sécurité et les fonctions jugées très élevées.",
+    reality: "Tesla n'a annoncé ni prix, ni date d'ouverture des commandes. La promesse est conditionnée à des critères que Musk n'a pas chiffrés.",
+    sources: [["Fox Business, 22 janvier 2026", "https://foxbusiness.com/economy/elon-musk-says-tesla-likely-sell-humanoid-robots-end-next-year"]],
+    en: {
+      title: "Optimus sold to the general public by late 2027",
+      promise: "At Davos, Musk says: \"By the end of next year, I think we'll be selling humanoid robots to the public\", once reliability, safety and functionality are judged very high.",
+      reality: "Tesla has announced neither a price nor a date for opening orders. The promise depends on criteria Musk has not quantified.",
+      sources: ["Fox Business, January 22, 2026"],
+    },
   },
   {
     id: "tesla-prix", brand: "Tesla", robot: "optimus", status: "open", said: null, due: null,
@@ -23,6 +62,12 @@ window.ROBODEX.promises = [
     promise: "Tesla vise un prix de 20 000 à 30 000 dollars une fois la production en grande série.",
     reality: "C'est un objectif, pas un tarif : aucun Optimus n'a encore été vendu, donc aucun prix n'a été pratiqué.",
     sources: [["Standard Bots, point 2026", "https://standardbots.com/blog/tesla-robot"]],
+    en: {
+      title: "An Optimus between $20,000 and $30,000",
+      promise: "Tesla is targeting a price of $20,000 to $30,000 once production reaches high volume.",
+      reality: "It is a target, not a price tag: no Optimus has been sold yet, so no price has actually been charged.",
+      sources: ["Standard Bots, 2026 update"],
+    },
   },
   {
     id: "figure-flotte", brand: "Figure AI", robot: "figure03", status: "disputed", said: "2025-02", due: null,
@@ -30,27 +75,51 @@ window.ROBODEX.promises = [
     promise: "Le patron de Figure décrit une flotte de robots qui réalise des opérations de bout en bout dans l'usine BMW.",
     reality: "Interrogé par Fortune, BMW répond qu'un seul robot Figure travaille à la fois dans l'usine, sur une tâche limitée. Figure a contesté l'article.",
     sources: [["Fortune, 6 avril 2025", "https://fortune.com/2025/04/06/figure-ai-bmw-humanoid-robot-partnership-details-reality-exaggeration"], ["Repairer Driven News", "https://www.repairerdrivennews.com/2025/10/15/figure-ai-founder-claims-robots-running-on-bmw-production-line-10-hours-a-day/"]],
+    en: {
+      title: "A \"fleet\" of robots at work at BMW",
+      promise: "Figure's CEO describes a fleet of robots carrying out end-to-end operations in the BMW plant.",
+      reality: "Asked by Fortune, BMW replies that only one Figure robot works in the plant at a time, on a limited task. Figure disputed the article.",
+      sources: ["Fortune, April 6, 2025", "Repairer Driven News"],
+    },
   },
   {
     id: "figure-maison", brand: "Figure AI", robot: "figure03", status: "unproven", said: "2025-02", due: "2025-12-31",
     title: "Des essais à domicile dès 2025",
     promise: "Figure annonce le début d'essais « alpha » de son robot dans des maisons avant la fin de 2025.",
-    reality: "Aucun compte rendu indépendant ne confirme que ces essais ont eu lieu, ni ce qu'ils ont donné.",
-    sources: [["TechCrunch, 27 février 2025", "https://techcrunch.com/2025/02/27/figure-will-start-alpha-testing-its-humanoid-robot-in-the-home-in-2025/"]],
+    reality: "Aucun compte rendu indépendant ne confirme que ces essais ont eu lieu en 2025. En septembre 2026, Figure dit avoir évalué son robot dans 30 maisons de la baie de San Francisco, sans préciser s'il s'agissait de foyers de clients.",
+    sources: [["TechCrunch, 27 février 2025", "https://techcrunch.com/2025/02/27/figure-will-start-alpha-testing-its-humanoid-robot-in-the-home-in-2025/"], ["Figure, 17 septembre 2026", "https://www.figure.ai/news/helix-2-5-zero-shot-30-home-generalization"]],
+    en: {
+      title: "Home trials as early as 2025",
+      promise: "Figure announces the start of \"alpha\" trials of its robot in homes before the end of 2025.",
+      reality: "No independent report confirms that these trials took place in 2025. In September 2026, Figure says it evaluated its robot in 30 San Francisco Bay Area homes, without saying whether they were customers' homes.",
+      sources: ["TechCrunch, February 27, 2025", "Figure, September 17, 2026"],
+    },
   },
   {
     id: "figure-100000", brand: "Figure AI", robot: "figure03", status: "pending", said: "2025", due: "2029-01-31",
     title: "100 000 robots livrés en quatre ans",
     promise: "Figure dit voir « un chemin vers 100 000 robots » en quatre ans avec deux clients, BMW et un second non nommé.",
-    reality: "Aucune source ne rapporte de livraisons proches de cette échelle. Le déploiement connu reste un pilote chez BMW.",
-    sources: [["IoT World Today", "https://iotworldtoday.com/robotics/figure-ai-plans-to-ship-100-000-humanoid-robots-over-next-few-years"], ["The Robot Report, juin 2026", "https://www.therobotreport.com/bmw-group-deploys-figure-03-humanoid-after-tests-previous-version/"]],
+    reality: "Fin avril 2026, Figure annonce plus de 350 Figure 03 livrés par son usine et un rythme d'un robot par heure. Aucune source indépendante ne rapporte de livraisons proches de 100 000 ; le déploiement connu chez BMW reste un pilote.",
+    sources: [["IoT World Today", "https://iotworldtoday.com/robotics/figure-ai-plans-to-ship-100-000-humanoid-robots-over-next-few-years"], ["The Robot Report, juin 2026", "https://www.therobotreport.com/bmw-group-deploys-figure-03-humanoid-after-tests-previous-version/"], ["Figure, 29 avril 2026", "https://www.figure.ai/news/ramping-figure-03-production"]],
+    en: {
+      title: "100,000 robots delivered in four years",
+      promise: "Figure says it sees \"a path to 100,000 robots\" over four years with two customers, BMW and a second unnamed one.",
+      reality: "In late April 2026, Figure announces more than 350 Figure 03 delivered by its factory and a rate of one robot per hour. No independent source reports deliveries anywhere near 100,000; the known deployment at BMW remains a pilot.",
+      sources: ["IoT World Today", "The Robot Report, June 2026", "Figure, April 29, 2026"],
+    },
   },
   {
     id: "1x-livraisons", brand: "1X", robot: "neo", status: "pending", said: "2025-10", due: "2026-12-31",
     title: "NEO livré dans les foyers américains en 2026",
     promise: "À l'ouverture des précommandes, 1X promet les premières livraisons aux États-Unis en 2026.",
-    reality: "L'usine de Hayward a lancé la production le 30 avril 2026. En mai 2026, la presse spécialisée ne relevait encore aucune livraison confirmée chez un particulier.",
-    sources: [["Gulf News", "https://gulfnews.com/technology/consumer-electronics/meet-neo-the-20000-humanoid-assistant-aiming-to-fully-automate-your-home-chores-1.500325447"], ["Macau Business — ouverture de l'usine", "https://macaubusiness.com/1x-opens-neo-factory-in-hayward-ca-americas-first-vertically-integrated-humanoid-robot-factory-with-consumer-shipments-planned-for-2026/"], ["The Gadgeteer, mai 2026", "https://the-gadgeteer.com/2026/05/20/home-robots-available-2026/"]],
+    reality: "L'usine de Hayward a lancé la production le 30 avril 2026. Au 15 octobre 2026, la page de commande de 1X indique toujours « US Deliveries start 2026 », et nous n'avons trouvé aucune confirmation indépendante d'une livraison chez un particulier.",
+    sources: [["Gulf News", "https://gulfnews.com/technology/consumer-electronics/meet-neo-the-20000-humanoid-assistant-aiming-to-fully-automate-your-home-chores-1.500325447"], ["Macau Business — ouverture de l'usine", "https://macaubusiness.com/1x-opens-neo-factory-in-hayward-ca-americas-first-vertically-integrated-humanoid-robot-factory-with-consumer-shipments-planned-for-2026/"], ["The Gadgeteer, mai 2026", "https://the-gadgeteer.com/2026/05/20/home-robots-available-2026/"], ["1X — page de commande", "https://www.1x.tech/order"]],
+    en: {
+      title: "NEO delivered to American homes in 2026",
+      promise: "When pre-orders open, 1X promises the first deliveries in the United States in 2026.",
+      reality: "The Hayward factory started production on April 30, 2026. As of October 15, 2026, 1X's order page still reads \"US Deliveries start 2026\", and we found no independent confirmation of a delivery to a private customer.",
+      sources: ["Gulf News", "Macau Business — factory opening", "The Gadgeteer, May 2026", "1X — order page"],
+    },
   },
   {
     id: "1x-100000", brand: "1X", robot: "neo", status: "pending", said: "2026-04", due: "2027-12-31",
@@ -58,6 +127,38 @@ window.ROBODEX.promises = [
     promise: "1X annonce une capacité de 10 000 robots la première année, et vise plus de 100 000 par an d'ici la fin de 2027.",
     reality: "La production vient de commencer. Aucun chiffre de robots réellement fabriqués n'a été publié.",
     sources: [["Macau Business — ouverture de l'usine", "https://macaubusiness.com/1x-opens-neo-factory-in-hayward-ca-americas-first-vertically-integrated-humanoid-robot-factory-with-consumer-shipments-planned-for-2026/"]],
+    en: {
+      title: "More than 100,000 NEO per year by late 2027",
+      promise: "1X announces a capacity of 10,000 robots in the first year, and aims for more than 100,000 per year by the end of 2027.",
+      reality: "Production has only just begun. No figure for robots actually built has been published.",
+      sources: ["Macau Business — factory opening"],
+    },
+  },
+  {
+    id: "atlas-2026", brand: "Boston Dynamics", robot: "atlas", status: "pending", said: "2026-01", due: "2026-12-31",
+    title: "Des flottes d'Atlas chez Hyundai et Google DeepMind en 2026",
+    promise: "En dévoilant la version de production d'Atlas, Boston Dynamics annonce que toute la production 2026 est réservée, avec des flottes livrées à Hyundai et à Google DeepMind dans les mois suivants.",
+    reality: "Le 21 septembre 2026, Boston Dynamics ouvre chez Hyundai, en Géorgie, un centre où Atlas s'entraîne à la logistique des pièces. Aucun nombre de robots livrés n'a été publié, et nous n'avons trouvé aucune source sur une livraison à Google DeepMind.",
+    sources: [["Boston Dynamics, janvier 2026", "https://bostondynamics.com/blog/boston-dynamics-unveils-new-atlas-robot-to-revolutionize-industry/"], ["The Robot Report, 21 septembre 2026", "https://www.therobotreport.com/boston-dynamics-opens-metaplant-application-center-train-atlas-humanoid-robots/"]],
+    en: {
+      title: "Atlas fleets at Hyundai and Google DeepMind in 2026",
+      promise: "When unveiling the production version of Atlas, Boston Dynamics announces that all 2026 production is booked, with fleets delivered to Hyundai and Google DeepMind in the following months.",
+      reality: "On September 21, 2026, Boston Dynamics opens a center at Hyundai, in Georgia, where Atlas trains on parts logistics. No number of robots delivered has been published, and we found no source on a delivery to Google DeepMind.",
+      sources: ["Boston Dynamics, January 2026", "The Robot Report, September 21, 2026"],
+    },
+  },
+  {
+    id: "agility-bourse", brand: "Agility", robot: "digit", status: "pending", said: "2026-06-24", due: "2026-12-31",
+    title: "Agility en Bourse sur le Nasdaq en 2026",
+    promise: "Agility annonce sa fusion avec la SPAC Churchill Capital Corp XI, sur une valorisation de 2,5 milliards de dollars, avec une finalisation prévue en 2026 et une cotation sous le symbole AGLT.",
+    reality: "Au 13 octobre 2026, l'opération n'est pas finalisée et aucune date de clôture n'a été annoncée. Elle dépend encore du vote des actionnaires et de l'examen de la SEC.",
+    sources: [["SEC — communiqué du 24 juin 2026", "https://www.sec.gov/Archives/edgar/data/0002074973/000121390026071290/ea029548401ex99-1.htm"], ["The Motley Fool, 13 octobre 2026", "https://www.fool.com/investing/2026/10/13/the-first-pure-play-humanoid-robot-stock-is-about/"]],
+    en: {
+      title: "Agility listed on the Nasdaq in 2026",
+      promise: "Agility announces its merger with the SPAC Churchill Capital Corp XI, at a valuation of $2.5 billion, with completion expected in 2026 and a listing under the ticker AGLT.",
+      reality: "As of October 13, 2026, the deal has not closed and no closing date has been announced. It still depends on the shareholder vote and the SEC review.",
+      sources: ["SEC — June 24, 2026 press release", "The Motley Fool, October 13, 2026"],
+    },
   },
   {
     id: "unitree-g1", brand: "Unitree", robot: "g1", status: "kept", said: "2024-05", due: null,
@@ -65,13 +166,38 @@ window.ROBODEX.promises = [
     promise: "Unitree présente le G1 et annonce un prix de 16 000 dollars pour la version de base.",
     reality: "La version de série sort trois mois plus tard, au prix annoncé.",
     sources: [["Heise", "https://heise.de/-9720187"], ["Maginative — version de série", "https://www.maginative.com/article/unitree-launches-production-version-of-g1-humanoid-robot/"]],
+    en: {
+      title: "A $16,000 humanoid",
+      promise: "Unitree presents the G1 and announces a price of $16,000 for the base version.",
+      reality: "The production version comes out three months later, at the announced price.",
+      sources: ["Heise", "Maginative — production version"],
+    },
   },
   {
     id: "unitree-r1", brand: "Unitree", robot: "g1", status: "partial", said: "2025-07", due: null,
     title: "Un humanoïde à moins de 6 000 dollars",
     promise: "Unitree présente le R1 à partir de 39 999 yuans, soit environ 5 900 dollars.",
-    reality: "Le R1 est bien mis en vente à l'international en avril 2026, mais autour de 8 150 dollars avec les frais d'importation, pour des livraisons annoncées fin juin 2026.",
-    sources: [["AI Business", "https://aibusiness.com/automation/humanoid-robot-priced-under-6k-unveiled"], ["VnExpress — mise en vente", "https://e.vnexpress.net/news/tech/enterprises/unitree-starts-selling-cheapest-humanoid-robot-from-6-800-5063068.html"]],
+    reality: "Le R1 est bien mis en vente à l'international en avril 2026, mais autour de 8 150 dollars avec les frais d'importation. Au 15 octobre 2026, la boutique officielle l'affiche à partir de 4 900 dollars (version Air, non programmable), plus 300 à 1 200 dollars de livraison et les droits de douane.",
+    sources: [["AI Business", "https://aibusiness.com/automation/humanoid-robot-priced-under-6k-unveiled"], ["VnExpress — mise en vente", "https://e.vnexpress.net/news/tech/enterprises/unitree-starts-selling-cheapest-humanoid-robot-from-6-800-5063068.html"], ["Unitree — boutique officielle", "https://shop.unitree.com/products/unitree-r1"]],
+    en: {
+      title: "A humanoid for less than $6,000",
+      promise: "Unitree presents the R1 starting at 39,999 yuan, about $5,900.",
+      reality: "The R1 does go on sale internationally in April 2026, but at around $8,150 with import fees. As of October 15, 2026, the official store lists it from $4,900 (Air version, not programmable), plus $300 to $1,200 for shipping and customs duties.",
+      sources: ["AI Business", "VnExpress — sales launch", "Unitree — official store"],
+    },
+  },
+  {
+    id: "ubtech-500", brand: "UBTech", robot: "walker-s2", status: "kept", said: "2025-11", due: "2025-12-31",
+    title: "500 humanoïdes Walker livrés en 2025",
+    promise: "En lançant la production en série du Walker S2, UBTech vise 500 humanoïdes livrés avant la fin de l'année.",
+    reality: "Dans ses résultats annuels publiés le 31 mars 2026, UBTech déclare 1 079 humanoïdes de taille adulte vendus en 2025. C'est un chiffre de l'entreprise, toutes versions Walker S confondues.",
+    sources: [["PR Newswire, 17 novembre 2025", "https://www.prnewswire.com/news-releases/ubtech-humanoid-robot-walker-s2-begins-mass-production-and-delivery-with-orders-exceeding-800-million-yuan-302616924.html"], ["36Kr, 2 avril 2026", "https://eu.36kr.com/en/p/3749012764553737"]],
+    en: {
+      title: "500 Walker humanoids delivered in 2025",
+      promise: "When launching series production of the Walker S2, UBTech aims for 500 humanoids delivered before the end of the year.",
+      reality: "In its annual results published on March 31, 2026, UBTech reports 1,079 adult-sized humanoids sold in 2025. This is a company figure, across all Walker S versions.",
+      sources: ["PR Newswire, November 17, 2025", "36Kr, April 2, 2026"],
+    },
   },
   {
     id: "engineai-ceinture", brand: "EngineAI", robot: "t800", status: "pending", said: "2026-02", due: "2026-12-31",
@@ -79,5 +205,11 @@ window.ROBODEX.promises = [
     promise: "En lançant sa ligue de combat de robots URKL, EngineAI promet à l'équipe championne une ceinture en or de 10 kg, d'une valeur annoncée de 10 millions de yuans.",
     reality: "Les premiers combats ont eu lieu à Shenzhen en juillet 2026. Les finales sont annoncées pour la fin de l'année : la ceinture n'a pas encore été remise.",
     sources: [["Gouvernement de Shenzhen", "https://www.sz.gov.cn/en_szgov/news/infocus/aisz/news/content/post_12647297.html"], ["TVB News — premiers combats", "https://news.tvb.com/en/1183656-HumanoidrobotfightingleaguemakesdebutinShenzhen"]],
+    en: {
+      title: "A 10 kg gold belt for the winning team",
+      promise: "When launching its URKL robot fighting league, EngineAI promises the champion team a 10 kg gold belt, with an announced value of 10 million yuan.",
+      reality: "The first fights took place in Shenzhen in July 2026. The finals are announced for the end of the year: the belt has not been awarded yet.",
+      sources: ["Shenzhen government", "TVB News — first fights"],
+    },
   },
 ];

@@ -1,9 +1,12 @@
 // Robodex — affichage des fiches et assistant vocal VEGA.
 // VEGA ne prononce que les phrases de lines.js (construites depuis data.js) : elle n'invente rien.
-// Si audio/manifest.json liste une phrase, elle joue le fichier ElevenLabs ; sinon elle utilise la voix du navigateur.
+// Si audio/manifest.json contient la phrase avec le même texte, elle joue le fichier ElevenLabs (en français) ;
+// sinon (phrase nouvelle ou modifiée, ou site en anglais) elle utilise la voix du navigateur.
 (() => {
   const DB = window.ROBODEX;
   const LINES = window.ROBODEX_LINES;
+  const { lang, locale, T, shortDate } = window.ROBODEX_I18N;
+  const EN = lang === "en";
   const { STATS, SUPER, COUNTRIES, best, frDate } = window.ROBODEX_UTIL;
   const ROBOTS = DB.robots;
   const $ = (s) => document.querySelector(s);
@@ -16,7 +19,7 @@
   const byId = (id) => ROBOTS.find((r) => r.id === id);
   const norm = (s) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
   const haystack = (r) => norm(`${r.name} ${r.maker} ${r.country} ${r.role} ${r.aliases.join(" ")}`);
-  const CONF = { C: ["c", "donnée du constructeur"], P: ["p", "presse ou revendeurs"], "?": ["q", "non confirmé"] };
+  const CONF = { C: ["c", T("conf.c")], P: ["p", T("conf.p")], "?": ["q", T("conf.q")] };
   const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const isPhone = () => matchMedia("(max-width: 760px)").matches;
 
@@ -26,7 +29,7 @@
   // ---------- Thème ----------
   const setTheme = (t) => {
     document.documentElement.dataset.theme = t;
-    $("#theme").textContent = t === "dark" ? "Mode clair" : "Mode sombre";
+    $("#theme").textContent = t === "dark" ? T("theme.light") : T("theme.dark");
     document.querySelector('meta[name="theme-color"]').content = t === "dark" ? "#0b0e17" : "#e9eef6";
     try {
       localStorage.setItem("robodex-theme", t);
@@ -78,12 +81,12 @@
     for (let m = 0; m <= 2; m += 0.5) {
       const yy = GROUND - m * PX;
       s.append(svg("line", { class: "tick", x1: 70, x2: 560, y1: yy, y2: yy }));
-      s.append(svg("text", { class: "tick-lbl", x: 60, y: yy + 5, "text-anchor": "end" }, `${m.toLocaleString("fr-FR", { minimumFractionDigits: 1 })} m`));
+      s.append(svg("text", { class: "tick-lbl", x: 60, y: yy + 5, "text-anchor": "end" }, `${m.toLocaleString(locale, { minimumFractionDigits: 1 })} m`));
     }
     const h = r.height ? r.height[0] : 1.7;
     s.append(figure(215, 1.75, false), figure(415, h, true));
-    s.append(svg("text", { class: "fig-lbl", x: 215, y: GROUND - 1.75 * PX - 12, "text-anchor": "middle" }, "Humain · 1,75 m"));
-    s.append(svg("text", { class: "fig-lbl robot", x: 415, y: GROUND - h * PX - 12, "text-anchor": "middle" }, `${r.name} · ${r.height ? STATS[0].show(h) : "taille inconnue"}`));
+    s.append(svg("text", { class: "fig-lbl", x: 215, y: GROUND - 1.75 * PX - 12, "text-anchor": "middle" }, T("scan.human")));
+    s.append(svg("text", { class: "fig-lbl robot", x: 415, y: GROUND - h * PX - 12, "text-anchor": "middle" }, `${r.name} · ${r.height ? STATS[0].show(h) : T("scan.unknown")}`));
     const alt = $("#r-noimg");
     alt.textContent = "";
     alt.append(figure(300, 2.2, true));
@@ -95,7 +98,7 @@
     list.textContent = "";
     const f = norm(filter);
     const shown = ROBOTS.filter((r) => !f || haystack(r).includes(f));
-    if (!shown.length) list.append(el("li", "empty", "Aucun robot ne correspond."));
+    if (!shown.length) list.append(el("li", "empty", T("roster.empty")));
     shown.forEach((r) => {
       const li = el("li");
       const b = el("button", r.id === current ? "is-on" : "");
@@ -146,7 +149,7 @@
       lbl.append(dot);
     }
     lbl.append(st.label);
-    const val = el("span", v ? "val" : "val none", v ? st.show(v[0]) : "non communiqué");
+    const val = el("span", v ? "val" : "val none", v ? st.show(v[0]) : T("na"));
     top.append(lbl, val);
     const bar = el("div", "bar");
     const fill = el("i");
@@ -189,7 +192,7 @@
       if (img.complete) show();
       $("#r-credit").textContent = r.image[1];
     } else {
-      $("#r-credit").textContent = "Pas de photo disponible";
+      $("#r-credit").textContent = T("nophoto");
     }
     setBackdrop(r.image && r.image[0]);
     replay(hero, "anim");
@@ -252,7 +255,7 @@
       const cell = (r, cls, amber) => {
         const d = el("div", `cmp-side ${cls}`);
         const v = r[st.key];
-        d.append(el("div", v ? "val" : "note", v ? st.show(v[0]) : "non communiqué"));
+        d.append(el("div", v ? "val" : "note", v ? st.show(v[0]) : T("na")));
         const bar = el("div", "bar");
         const fill = el("i", amber ? "b" : "");
         fill.style.width = "0%";
@@ -277,11 +280,11 @@
       const right = el("div");
       right.append(el("h4", "", j.title), el("p", "", j.text));
       const more = el("div", "more");
-      const a = el("a", "", `Source : ${j.src}`);
+      const a = el("a", "", T("journal.source", { src: j.src }));
       a.href = j.url;
       a.target = "_blank";
       a.rel = "noopener";
-      const open = el("button", "", `Voir la fiche ${byId(j.robot).name}`);
+      const open = el("button", "", T("journal.open", { name: byId(j.robot).name }));
       open.type = "button";
       open.addEventListener("click", () => {
         show("base");
@@ -315,28 +318,34 @@
   let browserVoice = null;
   const pickVoice = () => {
     if (!synth) return;
-    const fr = synth.getVoices().filter((v) => v.lang && v.lang.toLowerCase().startsWith("fr"));
-    browserVoice = fr.find((v) => /henri|paul|claude|thomas/i.test(v.name)) || fr.find((v) => /google/i.test(v.name)) || fr[0] || null;
+    const mine = synth.getVoices().filter((v) => v.lang && v.lang.toLowerCase().startsWith(lang));
+    const us = mine.filter((v) => /en-us/i.test(v.lang.replace("_", "-")));
+    browserVoice = EN
+      ? us.find((v) => /google/i.test(v.name)) || us[0] || mine[0] || null
+      : mine.find((v) => /henri|paul|claude|thomas/i.test(v.name)) || mine.find((v) => /google/i.test(v.name)) || mine[0] || null;
   };
   if (synth) {
     pickVoice();
     synth.addEventListener?.("voiceschanged", pickVoice);
   }
-  let clips = new Set(); // identifiants des phrases enregistrées avec ElevenLabs
-  fetch("audio/manifest.json")
-    .then((r) => (r.ok ? r.json() : { ids: [] }))
-    .then((m) => (clips = new Set(m.ids)))
-    .catch(() => {});
+  // Phrases enregistrées avec ElevenLabs (en français) : identifiant → texte enregistré.
+  // Un enregistrement n'est joué que si son texte est encore celui de lines.js.
+  let clips = {};
+  if (!EN)
+    fetch("audio/manifest.json")
+      .then((r) => (r.ok ? r.json() : {}))
+      .then((m) => (clips = m.texts || {}))
+      .catch(() => {});
   const player = new Audio();
   const setState = (s) => {
     $("#vega").classList.toggle("is-speaking", s === "speaking");
     $("#vega").classList.toggle("is-listening", s === "listening");
-    $("#vega-state").textContent = s === "speaking" ? "parle" : s === "listening" ? "écoute" : "en veille";
+    $("#vega-state").textContent = T(s === "speaking" ? "vega.speaking" : s === "listening" ? "vega.listening" : "vega.idle");
   };
   const browserSpeak = (text) => {
     if (!synth) return;
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = "fr-FR";
+    u.lang = locale;
     if (browserVoice) u.voice = browserVoice;
     u.pitch = 0.85;
     u.onstart = () => setState("speaking");
@@ -352,7 +361,7 @@
     player.pause();
     setState("idle");
     if (!voiceOn) return;
-    if (!clips.has(id)) return browserSpeak(text);
+    if (clips[id] !== text) return browserSpeak(text);
     player.src = `audio/${id}.mp3`;
     player.onplaying = () => setState("speaking");
     player.onended = player.onpause = () => setState("idle");
@@ -374,25 +383,25 @@
     return hits.sort((a, b) => a[0] - b[0]).map((h) => h[1]);
   };
   const ATTRS = [
-    { key: "price", re: /prix|cout|coute|combien vaut|tarif|cher/ },
-    { key: "height", re: /taille|mesure|hauteur|grand|haut/ },
-    { key: "weight", re: /poids|pese|lourd|kilo/ },
-    { key: "speed", re: /vitesse|rapide|court|vite/ },
-    { key: "dof", re: /degre|articulation|liberte/ },
+    { key: "price", re: /prix|cout|coute|combien vaut|tarif|cher|price|cost|how much|expensive/ },
+    { key: "height", re: /taille|mesure|hauteur|grand|haut|height|tall/ },
+    { key: "weight", re: /poids|pese|lourd|kilo|weigh|heavy/ },
+    { key: "speed", re: /vitesse|rapide|court|vite|speed|fast/ },
+    { key: "dof", re: /degre|articulation|liberte|joint|freedom/ },
   ];
   const handle = (raw) => {
     const q = norm(raw);
     if (!q) return say("empty");
     const found = findRobots(q);
 
-    if (/^(aide|help)|que peux tu|tu sais faire|comment ca marche/.test(q)) return say("help");
+    if (/^(aide|help)|que peux tu|tu sais faire|comment ca marche|what can you|how does (it|this) work/.test(q)) return say("help");
 
-    if (/quoi de neuf|nouveau|actualite|avancee|dernier|journal|news/.test(q)) {
+    if (/quoi de neuf|nouveau|actualite|avancee|dernier|journal|news|what s new|latest|timeline/.test(q)) {
       show("journal");
       return say("journal");
     }
 
-    if (found.length >= 2 && /compar|versus| vs |difference|contre|entre| ou | et /.test(` ${q} `)) {
+    if (found.length >= 2 && /compar|versus| vs |difference|contre|entre| ou | et |against|between| or | and /.test(` ${q} `)) {
       $("#cmp-a").value = found[0].id;
       $("#cmp-b").value = found[1].id;
       show("compare");
@@ -414,15 +423,15 @@
       return say(`country-${country.id}`);
     }
 
-    if (/combien de robot|combien d unite|combien y a/.test(q)) return say("count");
+    if (/combien de robot|combien d unite|combien y a|how many robot/.test(q)) return say("count");
 
     const attr = ATTRS.find((a) => a.re.test(q));
-    const r = found[0] || (attr || /statut|disponible|acheter|vente|source|ce robot/.test(q) ? byId(current) : null);
+    const r = found[0] || (attr || /statut|disponible|acheter|vente|source|ce robot|status|available|buy|sale|this robot/.test(q) ? byId(current) : null);
     if (r) {
       show("base");
       select(r.id);
-      if (/statut|disponible|acheter|en vente|commercialis/.test(q)) return say(`status-${r.id}`);
-      if (/source|d ou vien|preuve/.test(q)) return say("sources");
+      if (/statut|disponible|acheter|en vente|commercialis|status|available|buy|for sale|on sale/.test(q)) return say(`status-${r.id}`);
+      if (/source|d ou vien|preuve|proof|where does/.test(q)) return say("sources");
       if (attr) return say(`${attr.key}-${r.id}`);
       return say(`sum-${r.id}`);
     }
@@ -442,7 +451,7 @@
     synth?.cancel();
     player.pause();
     rec = new Rec();
-    rec.lang = "fr-FR";
+    rec.lang = locale;
     rec.interimResults = false;
     rec.onstart = () => setState("listening");
     rec.onresult = (e) => {
@@ -462,22 +471,22 @@
   const openVega = (open) => {
     $("#vega").classList.toggle("is-open", open);
     $("#vega-toggle").setAttribute("aria-expanded", String(open));
-    $("#vega-toggle").setAttribute("aria-label", open ? "Réduire l'assistant" : "Ouvrir l'assistant");
+    $("#vega-toggle").setAttribute("aria-label", T(open ? "vega.close" : "vega.open"));
   };
 
   // ---------- Démarrage ----------
   $("#count").textContent = ROBOTS.length;
-  $("#updated").textContent = DB.updated;
+  $("#updated").textContent = shortDate(DB.updated);
   ["#cmp-a", "#cmp-b"].forEach((id, i) => {
     ROBOTS.forEach((r) => {
       const o = el("option", "", `${r.name} — ${r.maker}`);
       o.value = r.id;
       $(id).append(o);
     });
-    $(id).value = ROBOTS[i ? 2 : 0].id;
+    $(id).value = i ? "optimus" : ROBOTS[0].id;
     $(id).addEventListener("change", renderCompare);
   });
-  ["Présente Atlas", "Lequel est le plus rapide ?", "Compare G1 et Optimus", "Quoi de neuf ?", "Robots chinois"].forEach((c) => {
+  T("chips").forEach((c) => {
     const b = el("button", "", c);
     b.type = "button";
     b.addEventListener("click", () => {
@@ -528,19 +537,23 @@
       player.pause();
       setState("idle");
     }
-    $("#mute").textContent = `Voix : ${on ? "oui" : "non"}`;
+    $("#mute").textContent = T(on ? "voice.on" : "voice.off");
     $("#mute").setAttribute("aria-pressed", String(!on));
   };
   $("#mute").addEventListener("click", () => setVoice(!voiceOn));
   $("#theme").addEventListener("click", () => setTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark"));
-  const boot = (withVoice) => {
-    setVoice(withVoice);
+  // quiet : après un changement de langue, on revient sans repasser par l'écran de démarrage et sans parler
+  // (le navigateur n'autorise la voix qu'après un clic sur la nouvelle page)
+  const boot = (withVoice, quiet = false) => {
+    setVoice(quiet ? false : withVoice);
     $("#boot").classList.add("is-off");
     document.body.classList.add("is-ready");
     say("greet");
+    if (quiet) setVoice(withVoice);
   };
   $("#boot-start").addEventListener("click", () => boot(true));
   $("#boot-silent").addEventListener("click", () => boot(false));
+  window.ROBODEX_APP = { voiceOn: () => voiceOn };
   window.addEventListener("resize", movePill);
   document.fonts?.ready.then(movePill);
 
@@ -549,4 +562,13 @@
   renderCompare();
   select(current);
   movePill();
+  try {
+    const resume = sessionStorage.getItem("robodex-resume");
+    if (resume) {
+      sessionStorage.removeItem("robodex-resume");
+      boot(!!JSON.parse(resume).voice, true);
+    }
+  } catch (e) {
+    /* stockage indisponible : l'écran de démarrage s'affiche normalement */
+  }
 })();

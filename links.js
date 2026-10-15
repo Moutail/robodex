@@ -1,14 +1,17 @@
 // Robodex — liens directs vers un écran du site.
 //   #promesses            #promesses/tesla-10000     #robots/atlas
 //   #comparer/g1/optimus  #journal                   #accueil
+//   Les mêmes en anglais : #promises #robots #compare #timeline #home
 // Paramètres : ?entrer (passe l'écran de démarrage, sans la voix) · ?q=question (pose la question à VEGA)
+//              ?lang=en ou ?lang=fr (choisit la langue et la retient ; traité dans <head>)
 //              ?robot=n (affiche le n-ième robot du diaporama d'accueil) · ?theme=sombre|clair · ?y=hauteur
 // Chargé en dernier.
 (() => {
   const $ = (s) => document.querySelector(s);
   const tab = (view) => document.querySelector(`.tab[data-view="${view}"]`)?.click();
   const route = () => {
-    const [name, a, b] = decodeURIComponent(location.hash.slice(1)).split("/");
+    const [raw, a, b] = decodeURIComponent(location.hash.slice(1)).split("/");
+    const name = { home: "accueil", promises: "promesses", compare: "comparer", timeline: "journal" }[raw] || raw;
     if (!name) return;
     if (name === "accueil") return tab("home");
     if (name === "journal") return tab("journal");

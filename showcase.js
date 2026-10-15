@@ -65,7 +65,7 @@
   slides.forEach((r, k) => {
     const d = document.createElement("button");
     d.type = "button";
-    d.setAttribute("aria-label", `Afficher ${r.name}`);
+    d.setAttribute("aria-label", window.ROBODEX_I18N.T("show.robot", { name: r.name }));
     d.append(document.createElement("i"));
     d.addEventListener("click", () => go(k));
     dots.append(d);

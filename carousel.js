@@ -12,8 +12,9 @@
     wrap.append(b);
     return b;
   };
-  const prev = mk("prev", "Robots précédents", "M15 5l-7 7 7 7");
-  const next = mk("next", "Robots suivants", "M9 5l7 7-7 7");
+  const { T } = window.ROBODEX_I18N;
+  const prev = mk("prev", T("roster.prev"), "M15 5l-7 7 7 7");
+  const next = mk("next", T("roster.next"), "M9 5l7 7-7 7");
   const page = (dir) => list.scrollBy({ left: dir * Math.max(180, list.clientWidth * 0.7), behavior: "smooth" });
   prev.addEventListener("click", () => page(-1));
   next.addEventListener("click", () => page(1));
