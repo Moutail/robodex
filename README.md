@@ -8,7 +8,9 @@ Un site statique (HTML, CSS, JavaScript, sans serveur) qui suit les annonces des
 - `promises.js` — les promesses, leur échéance, leur statut et leurs sources
 - `lines.js` — les phrases de l'assistant vocal VEGA, construites à partir des données
 - `i18n.js` — la version anglaise : textes de l'interface, et sélecteur FR | EN (le choix est retenu ; lien direct : `?lang=en`)
-- `audio/` — ces phrases, enregistrées en français (en anglais, VEGA utilise la voix du navigateur)
+- `audio/` — ces phrases, enregistrées avec la voix de VEGA (ElevenLabs) : en français dans `audio/`, en anglais dans `audio/en/`
+
+Après une modification de `data.js` ou `promises.js`, les phrases nouvelles ou modifiées sont réenregistrées avec `python tools/tts.py maj` (dans la copie de travail), puis le dossier `audio/` est recopié ici. En attendant, VEGA lit ces phrases avec la voix du navigateur.
 
 Chaque fiche, entrée du journal et promesse porte sa traduction anglaise dans un champ `en`, à côté du texte français.
 

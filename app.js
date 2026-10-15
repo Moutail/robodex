@@ -1,7 +1,8 @@
 // Robodex — affichage des fiches et assistant vocal VEGA.
 // VEGA ne prononce que les phrases de lines.js (construites depuis data.js) : elle n'invente rien.
-// Si audio/manifest.json contient la phrase avec le même texte, elle joue le fichier ElevenLabs (en français) ;
-// sinon (phrase nouvelle ou modifiée, ou site en anglais) elle utilise la voix du navigateur.
+// Si le manifeste audio de la langue (audio/manifest.json, ou audio/en/manifest.json) contient la phrase avec le même
+// texte, elle joue l'enregistrement ElevenLabs ; sinon (phrase pas encore enregistrée) elle utilise la voix du navigateur.
+// Enregistrer les phrases nouvelles ou modifiées : python tools/tts.py maj
 (() => {
   const DB = window.ROBODEX;
   const LINES = window.ROBODEX_LINES;
@@ -328,14 +329,14 @@
     pickVoice();
     synth.addEventListener?.("voiceschanged", pickVoice);
   }
-  // Phrases enregistrées avec ElevenLabs (en français) : identifiant → texte enregistré.
+  // Phrases enregistrées avec ElevenLabs dans la langue du site : identifiant → texte enregistré.
   // Un enregistrement n'est joué que si son texte est encore celui de lines.js.
+  const AUDIO = EN ? "audio/en/" : "audio/";
   let clips = {};
-  if (!EN)
-    fetch("audio/manifest.json")
-      .then((r) => (r.ok ? r.json() : {}))
-      .then((m) => (clips = m.texts || {}))
-      .catch(() => {});
+  fetch(`${AUDIO}manifest.json`, { cache: "no-cache" })
+    .then((r) => (r.ok ? r.json() : {}))
+    .then((m) => (clips = m.texts || {}))
+    .catch(() => {});
   const player = new Audio();
   const setState = (s) => {
     $("#vega").classList.toggle("is-speaking", s === "speaking");
@@ -362,7 +363,7 @@
     setState("idle");
     if (!voiceOn) return;
     if (clips[id] !== text) return browserSpeak(text);
-    player.src = `audio/${id}.mp3`;
+    player.src = `${AUDIO}${id}.mp3`;
     player.onplaying = () => setState("speaking");
     player.onended = player.onpause = () => setState("idle");
     player.onerror = () => browserSpeak(text);
