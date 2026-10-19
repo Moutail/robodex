@@ -285,13 +285,17 @@
       a.href = j.url;
       a.target = "_blank";
       a.rel = "noopener";
-      const open = el("button", "", T("journal.open", { name: byId(j.robot).name }));
-      open.type = "button";
-      open.addEventListener("click", () => {
-        show("base");
-        select(j.robot);
-      });
-      more.append(a, open);
+      more.append(a);
+      // une actualité peut ne concerner aucun robot de la base (ex. : une annonce d'OpenAI)
+      if (j.robot) {
+        const open = el("button", "", T("journal.open", { name: byId(j.robot).name }));
+        open.type = "button";
+        open.addEventListener("click", () => {
+          show("base");
+          select(j.robot);
+        });
+        more.append(open);
+      }
       right.append(more);
       li.append(left, right);
       list.append(li);

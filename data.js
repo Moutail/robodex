@@ -4,7 +4,7 @@
 //   en.sources = les titres des sources, dans le même ordre (les liens ne changent pas).
 // Dernière vérification des fiches : 15 octobre 2026.
 window.ROBODEX = {
-  updated: "2026-10-15",
+  updated: "2026-10-19",
   robots: [
     {
       id: "g1", image: ["img/g1.jpg", "Image : Unitree", "38% 50%"], name: "G1", maker: "Unitree", country: "Chine", year: 2024, role: "Recherche · grand public",
@@ -183,6 +183,14 @@ window.ROBODEX = {
     },
   ],
   journal: [
+    { date: "2026-10-19", tag: "Annonce", title: "OpenAI annonce son propre robot humanoïde", text: "« Nous allons le construire », dit Sam Altman, qui promet « une démo » en 2027 ; des robots dans la rue prendront, selon lui, quelques années de plus.", url: "https://www.digitaltoday.co.kr/en/view/116062/openai-declares-humanoid-robot-development-what-sam-altman-meant-by-2027", src: "Digital Today",
+      en: { tag: "Announcement", title: "OpenAI announces its own humanoid robot", text: "\"We will build it,\" says Sam Altman, who promises \"a cool demo\" in 2027; robots walking the streets will take a few more years, according to him." } },
+    { date: "2026-10-19", tag: "Commerce", title: "Les robots UBTech arrivent au Japon", text: "Bitcoin Japan devient le distributeur exclusif de six robots UBTech, dont le Walker S2 (accord signé le 16 octobre). UBTech dit avoir vendu 921 humanoïdes au premier semestre 2026.", robot: "walker-s2", url: "https://manilatimes.net/2026/10/20/tmt-newswire/globenewswire/bitcoin-japan-signs-exclusive-agreement-to-bring-ubtech-humanoid-robots-to-japan/2449086", src: "GlobeNewswire",
+      en: { tag: "Business", title: "UBTech robots are coming to Japan", text: "Bitcoin Japan becomes the exclusive distributor of six UBTech robots, including the Walker S2 (agreement signed October 16). UBTech says it sold 921 humanoids in the first half of 2026." } },
+    { date: "2026-10-15", tag: "Distinction", title: "NEO dans les meilleures inventions de 2026 selon TIME", text: "Le robot domestique de 1X, vendu 20 000 dollars, entre dans la liste du magazine. Aucune livraison chez un client n'est encore confirmée publiquement.", robot: "neo", url: "https://humanoid.guide/1x-neo-humanoid-joins-times-best-inventions-of-2026-list", src: "Humanoid.guide",
+      en: { tag: "Award", title: "NEO among TIME's Best Inventions of 2026", text: "1X's home robot, sold for $20,000, makes the magazine's list. No delivery to a customer has been publicly confirmed yet." } },
+    { date: "2026-10-15", tag: "Industrie", title: "Boston Dynamics assemble un Atlas en une journée", text: "L'entreprise vise environ une heure l'an prochain et présente une main à quatre doigts. Ce n'est pas une cadence de production ni une date de livraison.", robot: "atlas", url: "https://interestingengineering.com/ai-robotics/inside-boston-dynamics-humanoid-robot-factory", src: "Interesting Engineering",
+      en: { tag: "Industry", title: "Boston Dynamics builds an Atlas in one day", text: "The company is aiming for about an hour next year and shows a four-finger hand. This is neither a production rate nor a delivery date." } },
     { date: "2026-09-21", tag: "Industrie", title: "Boston Dynamics ouvre un centre d'entraînement pour Atlas chez Hyundai", text: "Près de Savannah, en Géorgie, Atlas y apprend la logistique des pièces automobiles avant de passer à l'assemblage.", robot: "atlas", url: "https://www.therobotreport.com/boston-dynamics-opens-metaplant-application-center-train-atlas-humanoid-robots/", src: "The Robot Report",
       en: { tag: "Industry", title: "Boston Dynamics opens a training center for Atlas at Hyundai", text: "Near Savannah, Georgia, Atlas is learning automotive parts logistics there before moving on to assembly." } },
     { date: "2026-09-17", tag: "Maison", title: "Figure dit avoir testé son robot dans 30 maisons", text: "Ranger un salon, plier des serviettes, faire un lit, dans des maisons de la baie de San Francisco où il n'avait jamais été entraîné, selon l'entreprise.", robot: "figure03", url: "https://www.figure.ai/news/helix-2-5-zero-shot-30-home-generalization", src: "Figure",
